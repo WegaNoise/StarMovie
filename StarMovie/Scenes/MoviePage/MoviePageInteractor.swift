@@ -6,8 +6,14 @@
 //
 
 protocol MoviePageInteractorProtocol: AnyObject {
+    var movie: Movie { get }
 }
 
 class MoviePageInteractor: MoviePageInteractorProtocol {
     weak var presenter: MoviePagePresenterProtocol?
+    let movie: Movie
+    
+    init(movie: Movie){
+        self.movie = movie
+    }
 }

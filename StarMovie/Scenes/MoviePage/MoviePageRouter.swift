@@ -6,8 +6,13 @@
 //
 
 protocol MoviePageRouterProtocol {
+    func goOutMoviePage()
 }
 
 class MoviePageRouter: MoviePageRouterProtocol {
     weak var viewController: MoviePageViewController?
+    
+    func goOutMoviePage(){
+        viewController?.navigationController?.popViewController(animated: true)
+    }
 }

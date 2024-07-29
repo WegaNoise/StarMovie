@@ -10,7 +10,7 @@ import UIKit
 extension UIColor{
     
     //custom init with color creation by hex
-    convenience init(hexString: String) {
+    convenience init(hexString: String, alpha: CGFloat) {
            let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
            var int = UInt64()
            Scanner(string: hex).scanHexInt64(&int)
@@ -25,7 +25,7 @@ extension UIColor{
            default:
                (a, r, g, b) = (255, 0, 0, 0)
            }
-           self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
+        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: alpha)
        }
 }
 

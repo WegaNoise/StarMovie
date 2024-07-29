@@ -6,24 +6,51 @@
 //
 
 import UIKit
+import SnapKit
+import Kingfisher
 
 protocol MoviePageViewProtocol: AnyObject {
 }
 
-class MoviePageViewController: UIViewController {
-    // MARK: - Public
+final class MoviePageViewController: UIViewController {
+    
     var presenter: MoviePagePresenterProtocol?
 
-    // MARK: - View lifecycle
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
+    let movieScrollView = MovieScrollView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.getMovieName()
         initialize()
     }
 }
 
-// MARK: - Private functions
+
 private extension MoviePageViewController {
     func initialize() {
+        configNavBar()
+        view.backgroundColor = Resources.Colors.mainColorGray
+        view.addSubview(movieScrollView)
+        movieScrollView.snp.makeConstraints { scrollView in
+            scrollView.edges.equalToSuperview()
+        }
+        guard let movie = presenter?.movie else { return }
+        movieScrollView.addContentInScrollView(textName: movie.title ?? " - ",
+                                               imagePath: movie.posterPath ?? " - ",
+                                               textOverview: movie.overview ?? " - ",
+                                               dateRelease: movie.releaseDate ?? " - ", 
+                                               ratingValue: movie.voteAverage ?? 0)
+    }
+    
+    func configNavBar(){
+        navigationItem.title = "Movie"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(pressBackButton))
+    }
+    
+    @objc func pressBackButton(){
+        presenter?.pressBeckButtton()
     }
 }
 

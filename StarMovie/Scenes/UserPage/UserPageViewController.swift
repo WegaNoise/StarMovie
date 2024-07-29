@@ -6,24 +6,25 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol UserPageViewProtocol: AnyObject {
 }
 
 class UserPageViewController: UIViewController {
-    // MARK: - Public
+    
     var presenter: UserPagePresenterProtocol?
-
-    // MARK: - View lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initialize()
     }
 }
 
-// MARK: - Private functions
 private extension UserPageViewController {
     func initialize() {
+        view.backgroundColor = .purple
+        navigationItem.title = Resources.Titls.userPage
     }
 }
 

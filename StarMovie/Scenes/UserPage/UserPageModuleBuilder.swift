@@ -12,8 +12,7 @@ class UserPageModuleBuilder {
         let interactor = UserPageInteractor()
         let router = UserPageRouter()
         let presenter = UserPagePresenter(interactor: interactor, router: router)
-        let storyboard = UIStoryboard(name: "UserPage", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "UserPage") as! UserPageViewController
+        let viewController = UserPageViewController()
         presenter.view  = viewController
         viewController.presenter = presenter
         interactor.presenter = presenter

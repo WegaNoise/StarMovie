@@ -24,7 +24,7 @@ final class HomeMovieCell: UICollectionViewCell {
         label.textColor = Resources.Colors.mainColorLight
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = Resources.Fonts.gillSansFont(size: 19)
+        label.font = Resources.Fonts.gillSansFont(size: 19, blod: false)
         return label
     }()
     
@@ -53,10 +53,20 @@ final class HomeMovieCell: UICollectionViewCell {
         self.layer.cornerRadius = 10
     }
     
-    func configDataInCell(image: UIImage?, name: String?, year: Int?){
-        movieImageView.image = image
-        movieNameLabel.text = name
-        movieYearLabel.text = year?.description
+    override var isSelected: Bool{
+        didSet{
+            movieNameLabel.backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
+            movieYearLabel.backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
+            movieNameLabel.textColor = self.isSelected ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
+            movieYearLabel.textColor = self.isSelected ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
+        }
+    }
+    
+    
+    func getDataForCollectionViewCell(imagePath: String, filmName: String, dateRelis: String){
+        movieImageView.getImageMovie(url: imagePath, plaseholderImage: UIImage(named: "plaseholderIconDark")!)
+        movieNameLabel.text = filmName
+        movieYearLabel.text = dateRelis
     }
 }
 

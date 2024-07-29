@@ -12,8 +12,7 @@ class SearchPageModuleBuilder {
         let interactor = SearchPageInteractor()
         let router = SearchPageRouter()
         let presenter = SearchPagePresenter(interactor: interactor, router: router)
-        let storyboard = UIStoryboard(name: "SearchPage", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "SearchPage") as! SearchPageViewController
+        let viewController = SearchPageViewController()
         presenter.view  = viewController
         viewController.presenter = presenter
         interactor.presenter = presenter

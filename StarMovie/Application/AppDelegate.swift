@@ -14,9 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        let vc = HomePageModuleBuilder.build()
-        let navigationController = NavigationConroller(rootViewController: vc)
-        window?.rootViewController = navigationController
+        let tabBar = CustomTabBarController()
+        window?.rootViewController = tabBar
         window?.makeKeyAndVisible()
         return true
     }

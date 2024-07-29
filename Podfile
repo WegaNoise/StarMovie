@@ -8,5 +8,6 @@ target 'StarMovie' do
   # Pods for StarMovie
  pod 'SnapKit'
  pod 'Alamofire'
+ pod 'Kingfisher'
 
 end

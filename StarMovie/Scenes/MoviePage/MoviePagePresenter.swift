@@ -6,12 +6,16 @@
 //
 
 protocol MoviePagePresenterProtocol: AnyObject {
+    var movie: Movie? { get }
+    func getMovieName()
+    func pressBeckButtton()
 }
 
 class MoviePagePresenter {
     weak var view: MoviePageViewProtocol?
     var router: MoviePageRouterProtocol
     var interactor: MoviePageInteractorProtocol
+    var movie: Movie?
 
     init(interactor: MoviePageInteractorProtocol, router: MoviePageRouterProtocol) {
         self.interactor = interactor
@@ -20,4 +24,16 @@ class MoviePagePresenter {
 }
 
 extension MoviePagePresenter: MoviePagePresenterProtocol {
+    func getMovieName() {
+        movie = interactor.movie
+    }
+    
+    
+    
+    
+    
+    func pressBeckButtton(){
+        router.goOutMoviePage()
+    }
+    
 }

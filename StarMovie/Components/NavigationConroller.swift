@@ -22,7 +22,7 @@ private extension NavigationConroller{
     func initialize(){
         navAppearence.titleTextAttributes = [
             .foregroundColor: Resources.Colors.mainColorLight,
-            .font: Resources.Fonts.gillSansFont(size: 20)
+            .font: Resources.Fonts.gillSansFont(size: 20, blod: true)
         ]
         navAppearence.configureWithOpaqueBackground()
         navAppearence.backgroundColor = Resources.Colors.mainColorDark

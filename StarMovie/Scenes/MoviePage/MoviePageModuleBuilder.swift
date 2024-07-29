@@ -8,12 +8,11 @@
 import UIKit
 
 class MoviePageModuleBuilder {
-    static func build() -> MoviePageViewController {
-        let interactor = MoviePageInteractor()
+    static func build(movie: Movie) -> MoviePageViewController {
+        let interactor = MoviePageInteractor(movie: movie)
         let router = MoviePageRouter()
         let presenter = MoviePagePresenter(interactor: interactor, router: router)
-        let storyboard = UIStoryboard(name: "MoviePage", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "MoviePage") as! MoviePageViewController
+        let viewController = MoviePageViewController()
         presenter.view  = viewController
         viewController.presenter = presenter
         interactor.presenter = presenter

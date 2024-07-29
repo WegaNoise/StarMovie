@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol SelectedItemCollectionViewProtocol: AnyObject{
+    func selectItem(index: IndexPath)
+}
+
 final class HomeCollectionView: UICollectionView {
 
+    weak var selectItemDelegate: SelectedItemCollectionViewProtocol?
+    
     init(){
         let collectionViewLayout = UICollectionViewFlowLayout()
         collectionViewLayout.scrollDirection = .vertical
@@ -26,35 +32,27 @@ private extension HomeCollectionView{
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
         backgroundColor = Resources.Colors.mainColorGray
+        contentInset.top = 20
+        contentInset.bottom = 150
         register(HomeMovieCell.self, forCellWithReuseIdentifier: HomeMovieCell.id)
-        dataSource = self
         delegate = self
     }
 }
 
-extension HomeCollectionView: UICollectionViewDataSource{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 51
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = self.dequeueReusableCell(withReuseIdentifier: HomeMovieCell.id, for: indexPath) as! HomeMovieCell
-        cell.configDataInCell(image: UIImage(named: "testPoster"), name: "film \(indexPath.row)", year: 2000 + indexPath.row)
-        cell.backgroundColor = Resources.Colors.mainColorLight
-        return cell
-    }
-}
-
-extension HomeCollectionView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+extension HomeCollectionView: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (UIScreen.main.bounds.width / 3) * 0.9, height: 220)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectItemDelegate?.selectItem(index: indexPath)
+       
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.deselectItem(at: indexPath, animated: false)
+        }
     }
 }
