@@ -7,8 +7,16 @@
 
 import UIKit
 import SnapKit
+import YouTubePlayer
+
+protocol MovieScrollViewProtocol: AnyObject {
+    func pressedButtonAddMovie()
+    func starRatingChanged(newValue: Int)
+}
 
 final class MovieScrollView: UIScrollView {
+    
+    weak var movieScrollDelegate: MovieScrollViewProtocol?
     
     private let contentView: UIView = {
         let content = UIView()
@@ -40,11 +48,13 @@ final class MovieScrollView: UIScrollView {
         label.textColor = Resources.Colors.mainColorLight
         label.font = Resources.Fonts.gillSansFont(size: 23, blod:  false)
         label.numberOfLines = 0
-        label.textAlignment = .natural
+        label.textAlignment = .justified
         return label
     }()
+
+    private let infoDataView = UIView()
     
-    private let releaseDateLabel: UILabel = {
+    private let titleReleseDateLabel: UILabel = {
         let releseDate = UILabel()
         releseDate.textColor = Resources.Colors.mainColorLight
         releseDate.font = Resources.Fonts.gillSansFont(size: 25, blod: true)
@@ -65,6 +75,49 @@ final class MovieScrollView: UIScrollView {
     
     private let ratingProgressView = RatingProgressView()
     
+    private let langTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Resources.Colors.mainColorLight
+        label.font = Resources.Fonts.gillSansFont(size: 25, blod: true)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.text = "Lang: "
+        return label
+    }()
+    
+    private let languageLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Resources.Colors.accentColor
+        label.font = Resources.Fonts.gillSansFont(size: 30, blod: false)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let playerYT: YouTubePlayerView = {
+        let player = YouTubePlayerView()
+        player.layer.cornerRadius = 20
+        player.layer.borderWidth = 1.5
+        player.layer.borderColor = Resources.Colors.mainColorLight.cgColor
+        player.backgroundColor = Resources.Colors.mainColorDark
+        player.clipsToBounds = true
+        return player
+    }()
+    
+    private let watchLaterButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = Resources.Colors.ultraColorLight
+        button.layer.cornerRadius = 12
+        button.setTitleColor(Resources.Colors.accentColor, for: .normal)
+        button.titleLabel?.font = Resources.Fonts.gillSansFont(size: 23, blod: false)
+        button.setImage(UIImage(systemName: "house"), for: .normal)
+        button.tintColor = Resources.Colors.accentColor
+        button.addTarget(self, action: #selector(pressedWatchLaterButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let fiveStarView = FiveStarsRatingButton()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupScrollView()
@@ -74,75 +127,129 @@ final class MovieScrollView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addContentInScrollView(textName: String, imagePath: String, textOverview: String, dateRelease: String, ratingValue: Double){
-        filmNameLabel.text = textName
-        movieImageView.getImageMovie(url: imagePath, plaseholderImage: UIImage(named: "plaseholderIconDark")!)
-        overviewLabel.text = textOverview
-        dateLabel.text = dateRelease
-        ratingProgressView.getRatingValue(rating: ratingValue)
+    func addContentInScrollView(movie: Movie) {
+        filmNameLabel.text = movie.title
+        movieImageView.getImageMovie(url: movie.posterPath ?? " - ", plaseholderImage: UIImage(named: "plaseholderIconDark")!)
+        overviewLabel.text = movie.overview
+        dateLabel.text = movie.releaseDate
+        ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
+        playerYT.loadVideoID(movie.trailerID ?? "film")
+        configWatchLaterButton(inLibrary: movie.watchLater ?? false)
+        fiveStarView.setupUserMark(mark: nil)
+        languageLabel.text = movie.lang?.uppercased()
         addElementsInContentView()
+    }
+    
+    func configWatchLaterButton(inLibrary: Bool) {
+        watchLaterButton.setTitle(inLibrary ? "In Library" : "Watch Later", for: .normal)
+        watchLaterButton.setImage(inLibrary ? UIImage(systemName: "bookmark") : UIImage(systemName: "pencil.and.list.clipboard"), for: .normal)
+    }
+    
+    @objc
+    func pressedWatchLaterButton() {
+        movieScrollDelegate?.pressedButtonAddMovie()
     }
 }
 
-private extension MovieScrollView{
+private extension MovieScrollView {
     func setupScrollView() {
         showsVerticalScrollIndicator = true
         alwaysBounceVertical = true
+        fiveStarView.fiveStarsDelegare = self
         addSubviews(contentView)
-        contentView.snp.makeConstraints { content in
-            content.edges.equalToSuperview()
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(UIScreen.main.bounds.width)
+            make.edges.equalToSuperview()
         }
     }
     
-    func addElementsInContentView(){
-        contentView.addSubviews(filmNameLabel, movieImageView, overviewLabel, 
-                                releaseDateLabel, dateLabel, ratingProgressView)
+    func addElementsInContentView() {
+        let screenSize = UIScreen.main.bounds.size
+        contentView.addSubviews(filmNameLabel,
+                                movieImageView,
+                                overviewLabel,
+                                infoDataView.addSubviews(
+                                    titleReleseDateLabel,
+                                    dateLabel,
+                                    ratingProgressView,
+                                    langTitleLabel,
+                                    languageLabel),
+                                playerYT,
+                                watchLaterButton,
+                                fiveStarView)
         
-        let heightMovieName = filmNameLabel.textSizeHeight(text: filmNameLabel.text, font: filmNameLabel.font, width: UIScreen.main.bounds.width - 20)
-        let heightOverview = overviewLabel.textSizeHeight(text: overviewLabel.text, font: overviewLabel.font, width: UIScreen.main.bounds.width - 20)
-        
-        filmNameLabel.snp.makeConstraints { label in
-            label.centerX.equalToSuperview()
-            label.leading.equalToSuperview().offset(10)
-            label.trailing.equalToSuperview().offset(-10)
-            label.width.equalTo(UIScreen.main.bounds.width - 20)
-            label.height.equalTo(heightMovieName + 40)
+        filmNameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(16)
+            make.directionalHorizontalEdges.equalToSuperview().inset(10)
         }
         
-        movieImageView.snp.makeConstraints { imageView in
-            imageView.top.equalTo(filmNameLabel.snp.bottom).offset(10)
-            imageView.leading.equalToSuperview().offset(10)
-            imageView.trailing.equalToSuperview().offset((-UIScreen.main.bounds.width / 2) - 10)
-            imageView.height.equalTo(300)
-            imageView.width.equalTo((UIScreen.main.bounds.width / 2) - 20)
+        movieImageView.snp.makeConstraints { make in
+            make.top.equalTo(filmNameLabel.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(300)
+            make.width.equalTo((screenSize.width / 2) - 20)
         }
         
-        overviewLabel.snp.makeConstraints { overview in
-            overview.top.equalTo(movieImageView.snp.bottom)
-            overview.left.equalToSuperview().offset(10)
-            overview.right.equalToSuperview().offset(-10)
-            overview.width.equalTo(UIScreen.main.bounds.width - 20)
-            overview.height.equalTo(heightOverview + 20)
+        overviewLabel.snp.makeConstraints { make in
+            make.top.equalTo(movieImageView.snp.bottom).offset(16)
+            make.directionalHorizontalEdges.equalToSuperview().inset(10)
         }
         
-        releaseDateLabel.snp.makeConstraints { relese in
-            relese.top.equalTo(movieImageView.snp.top)
-            relese.left.equalTo(movieImageView.snp.right).offset(10)
-            relese.right.equalToSuperview().offset(-10)
+        infoDataView.snp.makeConstraints { make in
+            make.top.equalTo(movieImageView.snp.top)
+            make.trailing.equalToSuperview().offset(-10)
+            make.leading.equalTo(movieImageView.snp.trailing).offset(10)
+            make.bottom.equalTo(movieImageView.snp.bottom)
         }
         
-        dateLabel.snp.makeConstraints { dateRelease in
-            dateRelease.top.equalTo(releaseDateLabel.snp.bottom).offset(10)
-            dateRelease.left.equalTo(releaseDateLabel.snp.left)
-            dateRelease.right.equalTo(releaseDateLabel.snp.right)
-            dateRelease.height.equalTo(releaseDateLabel.snp.height)
+        titleReleseDateLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.directionalHorizontalEdges.equalToSuperview()
         }
         
-        ratingProgressView.snp.makeConstraints { rating in
-            rating.top.equalTo(dateLabel.snp.bottom).offset(10)
-            rating.bottom.equalTo(overviewLabel.snp.top).offset(-10)
-            rating.trailing.equalToSuperview().offset(-10)
-            rating.leading.equalTo(movieImageView.snp.trailing).offset(10)
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleReleseDateLabel.snp.bottom).offset(10)
+            make.directionalHorizontalEdges.equalToSuperview()
         }
+        
+        langTitleLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-20)
+            make.trailing.equalTo(titleReleseDateLabel.snp.centerX)
+        }
+        
+        languageLabel.snp.makeConstraints { make in
+            make.leading.equalTo(langTitleLabel.snp.trailing).offset(20)
+            make.bottom.equalTo(langTitleLabel.snp.bottom)
+        }
+
+        ratingProgressView.snp.makeConstraints { make in
+            make.top.equalTo(dateLabel.snp.bottom).offset(-20)
+            make.bottom.equalTo(langTitleLabel.snp.top).offset(20)
+            make.directionalHorizontalEdges.equalToSuperview()
+        }
+        
+        playerYT.snp.makeConstraints { make in
+            make.directionalHorizontalEdges.equalToSuperview().inset(10)
+            make.top.equalTo(overviewLabel.snp.bottom).offset(10)
+            make.height.equalTo(250)
+        }
+        
+        watchLaterButton.snp.makeConstraints { make in
+            make.top.equalTo(playerYT.snp.bottom).inset(-20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(10)
+        }
+        
+        fiveStarView.snp.makeConstraints { make in
+            make.top.equalTo(watchLaterButton.snp.bottom).inset(-20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(15)
+            make.height.equalTo(watchLaterButton.snp.height).multipliedBy(1.7)
+            make.bottom.equalToSuperview().inset(30)
+        }
+    }
+}
+
+extension MovieScrollView: FiveStarsRatingProtocol{
+    func changeStarRating(newValue: Int) {
+        movieScrollDelegate?.starRatingChanged(newValue: newValue)
     }
 }

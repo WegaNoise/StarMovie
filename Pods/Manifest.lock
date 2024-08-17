@@ -2,23 +2,27 @@ PODS:
   - Alamofire (5.8.0)
   - Kingfisher (7.12.0)
   - SnapKit (5.6.0)
+  - YouTubePlayer (0.7.2)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
   - SnapKit
+  - YouTubePlayer
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - Kingfisher
     - SnapKit
+    - YouTubePlayer
 
 SPEC CHECKSUMS:
   Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  YouTubePlayer: 2b5f2830d8f9b2cde942083211291e382c9e6bd5
 
-PODFILE CHECKSUM: 15c09931bda870de49598e95a5a15c04ca81063a
+PODFILE CHECKSUM: 8d4d4a5387f73cedddc750bf1370608e947aee96
 
 COCOAPODS: 1.12.1

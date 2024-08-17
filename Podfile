@@ -9,5 +9,6 @@ target 'StarMovie' do
  pod 'SnapKit'
  pod 'Alamofire'
  pod 'Kingfisher'
+ pod 'YouTubePlayer'
 
 end

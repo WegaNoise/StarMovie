@@ -16,7 +16,7 @@ class NetworkManager: NetworkServicesMovie {
     static let shared = NetworkManager()
     
     func getPopularMovieList(complition: @escaping (Result<[Movie], any Error>) -> Void){
-        guard let url = URL(string: "\(Resources.Url.baseURL)movie/popular?api_key=\(Resources.Url.keyApi)") else { return }
+        guard let url = URL(string: "\(Resources.UrlMovieDB.baseURL)movie/popular?api_key=\(Resources.UrlMovieDB.keyApi)") else { return }
         URLSession.shared.dataTask(with: url){ data, _, error in
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async {
@@ -31,7 +31,7 @@ class NetworkManager: NetworkServicesMovie {
     }
     
     func getImageForMovie(imageLink: String, complition: @escaping (_ imageData: Data) -> ()){
-        guard let url = URL(string: "\(Resources.Url.imageUrlPath)\(imageLink)") else { return }
+        guard let url = URL(string: "\(Resources.UrlMovieDB.imageUrlPath)\(imageLink)") else { return }
         URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else { return }
             
@@ -39,4 +39,17 @@ class NetworkManager: NetworkServicesMovie {
         }.resume()
     }
 
+    func getYouTubeTrailer(filmName: String, complition: @escaping (Result<VideoInfo, any Error>) -> ()) {
+        guard let url = URL(string: "\(Resources.UrlYouTube.baseSearhcURL)?key=\(Resources.UrlYouTube.keyAPI)&q=\(filmName) trailer") else { return }
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let result = try JSONDecoder().decode(YouTube.self, from: data)
+                complition(.success(result.items[0].id))
+            } catch {
+                complition(.failure(error))
+                print(error.localizedDescription)
+            }
+        }.resume()
+    }
 }

@@ -21,18 +21,22 @@ struct Movie: Codable {
     let releaseDate: String?
     let voteAverage: Double?
     let voteCount: Int?
-    var imageData: Data?
+    let lang: String?
+    var trailerID: String?
+    var watchLater: Bool?
+    
     
     enum CodingKeys: String, CodingKey {
-            case id
-            case originalTitle = "original_title"
-            case overview, title
-            case posterPath = "poster_path"
-            case mediaType = "media_type"
-            case releaseDate = "release_date"
-            case voteAverage = "vote_average"
-            case voteCount = "vote_count"
-            case imageData
-        }
+        case id
+        case originalTitle = "original_title"
+        case overview, title
+        case posterPath = "poster_path"
+        case mediaType = "media_type"
+        case releaseDate = "release_date"
+        case voteAverage = "vote_average"
+        case voteCount = "vote_count"
+        case lang = "original_language"
+        case trailerID, watchLater
+    }
 }
 

@@ -1,6 +1,6 @@
 //
 //  UserPagePresenter.swift
-//  Super easy dev
+//  StarMovie
 //
 //  Created by petar on 17.04.2024
 //

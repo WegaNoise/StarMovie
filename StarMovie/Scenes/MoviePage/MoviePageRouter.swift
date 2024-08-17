@@ -1,6 +1,6 @@
 //
 //  MoviePageRouter.swift
-//  Super easy dev
+//  StarMovie
 //
 //  Created by petar on 22.06.2024
 //
