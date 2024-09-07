@@ -14,7 +14,7 @@ protocol MoviePageInteractorProtocol: AnyObject {
 class MoviePageInteractor: MoviePageInteractorProtocol {
     weak var presenter: MoviePagePresenterProtocol?
     let movie: Movie
-    let sharedApi = NetworkManager.shared
+    let sharedApi = NetworkManager.access
     
     init(movie: Movie){
         self.movie = movie

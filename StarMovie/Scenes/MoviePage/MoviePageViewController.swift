@@ -33,7 +33,7 @@ private extension MoviePageViewController {
         configNavBar()
         view.backgroundColor = Resources.Colors.mainColorGray
         activityIndicator.color = Resources.Colors.accentColor
-        activityIndicator.startAnimating()
+        activityIndicator.changeState(.showAndStart)
         view.addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
@@ -56,14 +56,13 @@ private extension MoviePageViewController {
 extension MoviePageViewController: MoviePageViewProtocol {
     func startShowData() {
         DispatchQueue.main.async {
-            self.activityIndicator.removeFromSuperview()
             self.view.addSubview(self.movieScrollView)
             self.movieScrollView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
             self.movieScrollView.movieScrollDelegate = self
             guard let movie = self.presenter?.movie else { return }
-            self.activityIndicator.removeFromSuperview()
+            self.activityIndicator.changeState(.stopAndHidden)
             self.movieScrollView.addContentInScrollView(movie: movie)
         }
     }

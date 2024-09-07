@@ -1,19 +1,19 @@
 //
-//  HomeCollectionView.swift
+//  SearchCollectionView.swift
 //  StarMovie
 //
-//  Created by petar on 11.04.2024.
+//  Created by petar on 31.08.2024.
 //
 
 import UIKit
 
-protocol SelectedItemCollectionViewProtocol: AnyObject{
-    func selectItem(index: IndexPath)
+protocol SearchCollectionViewProtocol: AnyObject {
+    func selectedItem(index: IndexPath)
 }
 
-final class HomeCollectionView: UICollectionView {
-
-    weak var selectItemDelegate: SelectedItemCollectionViewProtocol?
+final class SearchCollectionView: UICollectionView {
+    
+    weak var searchCollectionViewDelegate: SearchCollectionViewProtocol?
     
     init(){
         let collectionViewLayout = UICollectionViewFlowLayout()
@@ -27,19 +27,20 @@ final class HomeCollectionView: UICollectionView {
     }
 }
 
-private extension HomeCollectionView{
-    func configCollectionView(){
+private extension SearchCollectionView {
+    func configCollectionView() {
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
+        delaysContentTouches = false
         backgroundColor = Resources.Colors.mainColorGray
         contentInset.top = 20
         contentInset.bottom = 150
-        register(HomeMovieCell.self, forCellWithReuseIdentifier: HomeMovieCell.id)
+        register(MainMovieCollectionViewCell.self, forCellWithReuseIdentifier: MainMovieCollectionViewCell.searchId)
         delegate = self
     }
 }
 
-extension HomeCollectionView: UICollectionViewDelegateFlowLayout{
+extension SearchCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (UIScreen.main.bounds.width / 3) * 0.9, height: 220)
     }
@@ -49,10 +50,6 @@ extension HomeCollectionView: UICollectionViewDelegateFlowLayout{
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectItemDelegate?.selectItem(index: indexPath)
-       
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.deselectItem(at: indexPath, animated: false)
-        }
+        searchCollectionViewDelegate?.selectedItem(index: indexPath)
     }
 }

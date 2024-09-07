@@ -8,9 +8,10 @@
 import UIKit
 import SnapKit
 
-final class HomeMovieCell: UICollectionViewCell {
+final class MainMovieCollectionViewCell: UICollectionViewCell {
     
-    static let id = "movieCell"
+    static let homeId = "movieHomeCell"
+    static let searchId = "movieSearchCell"
     
     let movieImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -53,15 +54,14 @@ final class HomeMovieCell: UICollectionViewCell {
         self.layer.cornerRadius = 10
     }
     
-    override var isSelected: Bool{
+    override var isHighlighted: Bool{
         didSet{
-            movieNameLabel.backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
-            movieYearLabel.backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
-            movieNameLabel.textColor = self.isSelected ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
-            movieYearLabel.textColor = self.isSelected ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
+            movieNameLabel.backgroundColor = self.isHighlighted ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
+            movieYearLabel.backgroundColor = self.isHighlighted ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
+            movieNameLabel.textColor = self.isHighlighted ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
+            movieYearLabel.textColor = self.isHighlighted ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
         }
     }
-    
     
     func getDataForCollectionViewCell(imagePath: String, filmName: String, dateRelis: String){
         movieImageView.getImageMovie(url: imagePath, plaseholderImage: UIImage(named: "plaseholderIconDark")!)
@@ -70,7 +70,7 @@ final class HomeMovieCell: UICollectionViewCell {
     }
 }
 
-private extension HomeMovieCell {
+private extension MainMovieCollectionViewCell {
     func setupConstrainsts(){
         contentView.addSubviews(movieImageView, movieNameLabel, movieYearLabel)
         

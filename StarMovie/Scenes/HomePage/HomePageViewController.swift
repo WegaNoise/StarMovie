@@ -16,9 +16,9 @@ final class HomePageViewController: UIViewController {
     
     var presenter: HomePagePresenterProtocol?
     
-    let homeCollectionView = HomeCollectionView()
+    private let homeCollectionView = HomeMovieCollectionView()
     
-    let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ private extension HomePageViewController {
         view.backgroundColor = Resources.Colors.mainColorGray
         navigationItem.title = Resources.Titls.homePage
         activityIndicator.color = Resources.Colors.accentColor
-        activityIndicator.startAnimating()
+        activityIndicator.changeState(.showAndStart)
         view.addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { indicator in
             indicator.centerX.centerY.equalToSuperview()
@@ -45,8 +45,7 @@ private extension HomePageViewController {
 // MARK: - HomePageViewProtocol
 extension HomePageViewController: HomePageViewProtocol {
     func initializeCollectionView() {
-        activityIndicator.stopAnimating()
-        activityIndicator.isHidden = true
+        activityIndicator.changeState(.stopAndHidden)
         
         view.addSubview(homeCollectionView)
         homeCollectionView.dataSource = self
@@ -65,7 +64,7 @@ extension HomePageViewController: UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: HomeMovieCell.id, for: indexPath) as! HomeMovieCell
+        let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
         guard let movie = presenter?.returnDataByMovie(index: indexPath.row) else { return UICollectionViewCell() }
         cell.getDataForCollectionViewCell(imagePath: movie.posterPath ?? " ",
                                           filmName: movie.title ?? "Movie name",
@@ -75,7 +74,7 @@ extension HomePageViewController: UICollectionViewDataSource{
 }
 
 extension HomePageViewController: SelectedItemCollectionViewProtocol{
-    func selectItem(index: IndexPath) {
+    func selectedItem(index: IndexPath) {
         presenter?.selectMovie(index: index.row)
     }
 }

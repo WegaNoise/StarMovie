@@ -14,7 +14,7 @@ protocol HomePageInteractorProtocol: AnyObject {
 class HomePageInteractor: HomePageInteractorProtocol {
     
     weak var presenter: HomePagePresenterProtocol?
-    let sharedApi = NetworkManager.shared
+    let sharedApi = NetworkManager.access
     
     func startLoadFormNetwork() {
         sharedApi.getPopularMovieList { [weak self] result in

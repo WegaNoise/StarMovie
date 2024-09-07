@@ -6,12 +6,18 @@
 //
 
 import UIKit
-// horizontal manu in search page, change category
+
+protocol HorizontalMenuProtocol: AnyObject {
+    func selectedCategory(genresID: Int)
+}
+
 final class MenuCollectionView: UICollectionView {
+    
+    weak var horzontalMenuDelegate: HorizontalMenuProtocol?
     
     private let collectionFlowLayout = UICollectionViewFlowLayout()
     
-    let categoryMenuArray = ["Horror", "Comedy", "Documentary", "Racing", "Biography", "Mult", "Anime", "Action"]
+    let categoryMenuArray = ["Drama", "Fantasy", "Horror", "Western", "Romance", "Animation", "Documentary", "Comedy"]
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: collectionFlowLayout)
@@ -23,7 +29,6 @@ final class MenuCollectionView: UICollectionView {
     }
 }
 
-//MARK: -Private method collectionView
 private extension MenuCollectionView{
     func configMenuCollection(){
         collectionFlowLayout.scrollDirection = .horizontal
@@ -38,9 +43,31 @@ private extension MenuCollectionView{
         delegate = self
         selectItem(at: [0,0], animated: true, scrollPosition: [])
     }
+    
+    func getGenreId(indexPath: IndexPath) -> Int {
+        switch indexPath.row {
+        case 0:
+            return 18
+        case 1:
+            return 14
+        case 2:
+            return 27
+        case 3:
+            return 37
+        case 4:
+            return 10752
+        case 5:
+            return 16
+        case 6:
+            return 99
+        case 7:
+            return 35
+        default:
+            return 28
+        }
+    }
 }
 
-//MARK: -UICollectionViewDataSource
 extension MenuCollectionView: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryMenuArray.count
@@ -56,6 +83,7 @@ extension MenuCollectionView: UICollectionViewDataSource{
 extension MenuCollectionView: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        horzontalMenuDelegate?.selectedCategory(genresID: getGenreId(indexPath: indexPath))
     }
 }
 
