@@ -41,9 +41,11 @@
 		D26120882BD2DE5C00B0761C /* UITabBarController + .swift in Sources */ = {isa = PBXBuildFile; fileRef = D26120872BD2DE5C00B0761C /* UITabBarController + .swift */; };
 		D270F5232C83851300A46396 /* SearchCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D270F5222C83851300A46396 /* SearchCollectionView.swift */; };
 		D270F5252C838EB200A46396 /* UIActivityIndicatorView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = D270F5242C838EB200A46396 /* UIActivityIndicatorView +.swift */; };
+		D270F5282C91BC8700A46396 /* StarMovieActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D270F5272C91BC8700A46396 /* StarMovieActivityIndicator.swift */; };
 		D29377F42C2C8EB100106BE4 /* MovieScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29377F32C2C8EB100106BE4 /* MovieScrollView.swift */; };
 		D29377F62C30612400106BE4 /* UILabel + .swift in Sources */ = {isa = PBXBuildFile; fileRef = D29377F52C30612400106BE4 /* UILabel + .swift */; };
 		D29377F82C3C603800106BE4 /* RatingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29377F72C3C603800106BE4 /* RatingProgressView.swift */; };
+		D29538CC2C9F414D0040E14B /* DateFormatter + .swift in Sources */ = {isa = PBXBuildFile; fileRef = D29538CB2C9F414D0040E14B /* DateFormatter + .swift */; };
 		D2C6BCF72C580C1500238694 /* YouTube.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C6BCF62C580C1500238694 /* YouTube.swift */; };
 		D2CCB2A72C2349F400A0596D /* UIImageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2A62C2349F400A0596D /* UIImageView +.swift */; };
 		D2CCB2AE2C273D2600A0596D /* MoviePageModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2A92C273D2600A0596D /* MoviePageModuleBuilder.swift */; };
@@ -52,6 +54,7 @@
 		D2CCB2B12C273D2600A0596D /* MoviePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2AC2C273D2600A0596D /* MoviePageViewController.swift */; };
 		D2CCB2B22C273D2600A0596D /* MoviePageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2AD2C273D2600A0596D /* MoviePageInteractor.swift */; };
 		D2CEE9ED2C78F9E300CF370F /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEE9EC2C78F9E300CF370F /* SearchTextField.swift */; };
+		D2FA6B5D2C9390E800BA18D1 /* StarActivityIndicator.json in Resources */ = {isa = PBXBuildFile; fileRef = D2FA6B5C2C9390E700BA18D1 /* StarActivityIndicator.json */; };
 		EED0CE0D1E1D03A697117200 /* Pods_StarMovie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BA498B93185B56A7060366E /* Pods_StarMovie.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,9 +98,11 @@
 		D26120872BD2DE5C00B0761C /* UITabBarController + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController + .swift"; sourceTree = "<group>"; };
 		D270F5222C83851300A46396 /* SearchCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionView.swift; sourceTree = "<group>"; };
 		D270F5242C838EB200A46396 /* UIActivityIndicatorView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicatorView +.swift"; sourceTree = "<group>"; };
+		D270F5272C91BC8700A46396 /* StarMovieActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarMovieActivityIndicator.swift; sourceTree = "<group>"; };
 		D29377F32C2C8EB100106BE4 /* MovieScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieScrollView.swift; sourceTree = "<group>"; };
 		D29377F52C30612400106BE4 /* UILabel + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + .swift"; sourceTree = "<group>"; };
 		D29377F72C3C603800106BE4 /* RatingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingProgressView.swift; sourceTree = "<group>"; };
+		D29538CB2C9F414D0040E14B /* DateFormatter + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter + .swift"; sourceTree = "<group>"; };
 		D2C6BCF62C580C1500238694 /* YouTube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTube.swift; sourceTree = "<group>"; };
 		D2CCB2A62C2349F400A0596D /* UIImageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView +.swift"; sourceTree = "<group>"; };
 		D2CCB2A92C273D2600A0596D /* MoviePageModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePageModuleBuilder.swift; sourceTree = "<group>"; };
@@ -106,6 +111,7 @@
 		D2CCB2AC2C273D2600A0596D /* MoviePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePageViewController.swift; sourceTree = "<group>"; };
 		D2CCB2AD2C273D2600A0596D /* MoviePageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePageInteractor.swift; sourceTree = "<group>"; };
 		D2CEE9EC2C78F9E300CF370F /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
+		D2FA6B5C2C9390E700BA18D1 /* StarActivityIndicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = StarActivityIndicator.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +231,7 @@
 		D23E72232BC8526C00EC4B7E /* SuportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				D2FA6B5C2C9390E700BA18D1 /* StarActivityIndicator.json */,
 				D23E72162BC8509100EC4B7E /* Assets.xcassets */,
 				D23E72182BC8509100EC4B7E /* LaunchScreen.storyboard */,
 			);
@@ -264,6 +271,7 @@
 				D2CCB2A62C2349F400A0596D /* UIImageView +.swift */,
 				D29377F52C30612400106BE4 /* UILabel + .swift */,
 				D270F5242C838EB200A46396 /* UIActivityIndicatorView +.swift */,
+				D29538CB2C9F414D0040E14B /* DateFormatter + .swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -287,6 +295,7 @@
 		D26120652BCC495700B0761C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D270F5262C91BC4600A46396 /* ActivityIndicator */,
 				D23E72332BC8588D00EC4B7E /* CollectionViewCell */,
 				D26120892BD2F31700B0761C /* TabBar */,
 				D26120662BCC499100B0761C /* NavigationConroller.swift */,
@@ -334,6 +343,14 @@
 				D270F5222C83851300A46396 /* SearchCollectionView.swift */,
 			);
 			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		D270F5262C91BC4600A46396 /* ActivityIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				D270F5272C91BC8700A46396 /* StarMovieActivityIndicator.swift */,
+			);
+			path = ActivityIndicator;
 			sourceTree = "<group>";
 		};
 		D29377F22C2C8E7C00106BE4 /* Components */ = {
@@ -437,6 +454,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D23E72172BC8509100EC4B7E /* Assets.xcassets in Resources */,
+				D2FA6B5D2C9390E800BA18D1 /* StarActivityIndicator.json in Resources */,
 				D23E721A2BC8509100EC4B7E /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,6 +530,7 @@
 				D2CCB2B02C273D2600A0596D /* MoviePageRouter.swift in Sources */,
 				D29377F62C30612400106BE4 /* UILabel + .swift in Sources */,
 				D2CCB2B12C273D2600A0596D /* MoviePageViewController.swift in Sources */,
+				D29538CC2C9F414D0040E14B /* DateFormatter + .swift in Sources */,
 				D2CEE9ED2C78F9E300CF370F /* SearchTextField.swift in Sources */,
 				D2CCB2B22C273D2600A0596D /* MoviePageInteractor.swift in Sources */,
 				D26120882BD2DE5C00B0761C /* UITabBarController + .swift in Sources */,
@@ -532,6 +551,7 @@
 				D270F5232C83851300A46396 /* SearchCollectionView.swift in Sources */,
 				D26120752BD0259300B0761C /* SearchPageInteractor.swift in Sources */,
 				D29377F42C2C8EB100106BE4 /* MovieScrollView.swift in Sources */,
+				D270F5282C91BC8700A46396 /* StarMovieActivityIndicator.swift in Sources */,
 				D23E722E2BC8531B00EC4B7E /* HomePageInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

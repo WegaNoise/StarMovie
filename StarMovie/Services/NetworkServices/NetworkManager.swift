@@ -39,8 +39,8 @@ class NetworkManager: NetworkServicesMovie {
         }.resume()
     }
     
-    func getYouTubeTrailer(filmName: String, complition: @escaping (Result<VideoInfo, any Error>) -> ()) {
-        guard let url = URL(string: "\(Resources.UrlYouTube.baseSearhcURL)?key=\(Resources.UrlYouTube.keyAPI)&q=\(filmName) trailer") else { return }
+    func getYouTubeTrailer(filmName: String, filmYear: String, complition: @escaping (Result<VideoInfo, any Error>) -> ()) {
+        guard let url = URL(string: "\(Resources.UrlYouTube.baseSearhcURL)?key=\(Resources.UrlYouTube.keyAPI)&q=\(filmName + " " + filmYear) trailer") else { return }
         URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else { return }
             do {

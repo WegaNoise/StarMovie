@@ -12,13 +12,14 @@ struct Movies: Codable {
 }
 
 struct Movie: Codable {
+    
     let id: Int
     let originalTitle: String?
     let posterPath: String?
     let overview: String?
     let title: String?
     let mediaType: String?
-    let releaseDate: String?
+    let releaseDate: Date?
     let voteAverage: Double?
     let voteCount: Int?
     let lang: String?
@@ -37,6 +38,25 @@ struct Movie: Codable {
         case voteCount = "vote_count"
         case lang = "original_language"
         case trailerID, watchLater
+    }
+  
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.originalTitle = try container.decodeIfPresent(String.self, forKey: .originalTitle)
+        self.overview = try container.decodeIfPresent(String.self, forKey: .overview)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath)
+        self.mediaType = try container.decodeIfPresent(String.self, forKey: .mediaType)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let release = try container.decodeIfPresent(String.self, forKey: .releaseDate)
+        self.releaseDate = dateFormatter.date(from: release ?? "2000-01-01")
+        self.voteAverage = try container.decodeIfPresent(Double.self, forKey: .voteAverage)
+        self.voteCount = try container.decodeIfPresent(Int.self, forKey: .voteCount)
+        self.lang = try container.decodeIfPresent(String.self, forKey: .lang)
+        self.trailerID = try container.decodeIfPresent(String.self, forKey: .trailerID)
+        self.watchLater = try container.decodeIfPresent(Bool.self, forKey: .watchLater)
     }
 }
 

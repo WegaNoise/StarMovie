@@ -18,7 +18,7 @@ final class HomePageViewController: UIViewController {
     
     private let homeCollectionView = HomeMovieCollectionView()
     
-    private let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +32,10 @@ private extension HomePageViewController {
     func initialize() {
         view.backgroundColor = Resources.Colors.mainColorGray
         navigationItem.title = Resources.Titls.homePage
-        activityIndicator.color = Resources.Colors.accentColor
-        activityIndicator.changeState(.showAndStart)
+        activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
         view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints { indicator in
-            indicator.centerX.centerY.equalToSuperview()
-            indicator.height.width.equalTo(150)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
@@ -45,15 +43,15 @@ private extension HomePageViewController {
 // MARK: - HomePageViewProtocol
 extension HomePageViewController: HomePageViewProtocol {
     func initializeCollectionView() {
-        activityIndicator.changeState(.stopAndHidden)
+        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
         
         view.addSubview(homeCollectionView)
         homeCollectionView.dataSource = self
         homeCollectionView.selectItemDelegate = self
-        homeCollectionView.snp.makeConstraints { collection in
-            collection.leading.equalToSuperview().offset(10)
-            collection.trailing.equalToSuperview().offset(-10)
-            collection.bottom.top.equalToSuperview()
+        homeCollectionView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.bottom.top.equalToSuperview()
         }
     }
 }
@@ -66,15 +64,13 @@ extension HomePageViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
         guard let movie = presenter?.returnDataByMovie(index: indexPath.row) else { return UICollectionViewCell() }
-        cell.getDataForCollectionViewCell(imagePath: movie.posterPath ?? " ",
-                                          filmName: movie.title ?? "Movie name",
-                                          dateRelis: movie.releaseDate ?? " Release date")
+        cell.configDataForCollectionViewCell(movie: movie)
         return cell
     }
 }
 
 extension HomePageViewController: SelectedItemCollectionViewProtocol{
     func selectedItem(index: IndexPath) {
-        presenter?.selectMovie(index: index.row)
+        presenter?.selectMovie(index: index)
     }
 }

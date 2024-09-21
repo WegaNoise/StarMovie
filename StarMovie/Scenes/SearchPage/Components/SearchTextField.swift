@@ -8,10 +8,10 @@
 import UIKit
 
 protocol SearchTextFieldProtocol: AnyObject {
-    func hideHorizontalMenu()
-    func showHorizontalMenu()
-    func userStartedSearching(query: String)
-    func searchIsEmpty()
+    func didBeginEditing()
+    func shouldPressedReturn(text: String)
+    func shouldPressedClear()
+    func userEnteredSearchQuery(query: String)
 }
 
 final class SearchTextField: UITextField {
@@ -59,29 +59,23 @@ private extension SearchTextField {
     
     @objc
     func changeText(){
-        guard text?.count ?? 0 >= 2, let query = text else { return }
-        searchTextFieldDelegate?.userStartedSearching(query: query)
+        searchTextFieldDelegate?.userEnteredSearchQuery(query: text ?? "")
     }
 }
 
 extension SearchTextField: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        searchTextFieldDelegate?.hideHorizontalMenu()
+        searchTextFieldDelegate?.didBeginEditing()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard text?.isEmpty == true else { resignFirstResponder()
-            return true
-        }
-        searchTextFieldDelegate?.searchIsEmpty()
-        searchTextFieldDelegate?.showHorizontalMenu()
+        searchTextFieldDelegate?.shouldPressedReturn(text: text ?? "")
         resignFirstResponder()
         return true
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        searchTextFieldDelegate?.showHorizontalMenu()
-        searchTextFieldDelegate?.searchIsEmpty()
+        searchTextFieldDelegate?.shouldPressedClear()
         return true
     }
 }

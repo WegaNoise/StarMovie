@@ -12,7 +12,7 @@ protocol HomePagePresenterProtocol: AnyObject {
     func viewToReady()
     func getDataPopularMovie(movies: [Movie])
     func returnDataByMovie(index: Int) -> Movie?
-    func selectMovie(index: Int)
+    func selectMovie(index: IndexPath)
 }
 
 class HomePagePresenter {
@@ -43,8 +43,8 @@ extension HomePagePresenter: HomePagePresenterProtocol {
         return movie
     }
     
-    func selectMovie(index: Int){
-        guard let movie = movies?[index] else { return }
-        router.openMoviePage(movie: movie)
+    func selectMovie(index: IndexPath){
+        guard let selectMovie = movies?[index.row] else { return }
+        router.openMoviePage(movie: selectMovie)
     }
 }

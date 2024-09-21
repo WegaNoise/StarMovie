@@ -4,6 +4,7 @@
 //
 //  Created by petar on 22.06.2024
 //
+import Foundation
 
 protocol MoviePagePresenterProtocol: AnyObject {
     var movie: Movie? { get }
@@ -28,8 +29,10 @@ class MoviePagePresenter {
 
 extension MoviePagePresenter: MoviePagePresenterProtocol {
     func viewDidLoad() {
-        interactor.getTrailerID()
         movie = interactor.movie
+        let dateFormatter = DateFormatter()
+        let releaseYear = dateFormatter.onlyYearString(from: movie?.releaseDate ?? Date())
+        interactor.getTrailerID(filmName: movie?.title ?? "", filmYear: releaseYear)
     }
     
     func getTrailerID(id: String) {

@@ -8,7 +8,7 @@ import Foundation
 
 protocol MoviePageInteractorProtocol: AnyObject {
     var movie: Movie { get }
-    func getTrailerID()
+    func getTrailerID(filmName: String, filmYear: String)
 }
 
 class MoviePageInteractor: MoviePageInteractorProtocol {
@@ -21,8 +21,8 @@ class MoviePageInteractor: MoviePageInteractorProtocol {
         
     }
     
-    func getTrailerID() {
-        sharedApi.getYouTubeTrailer(filmName: movie.title ?? "film movie") { [weak self] result  in
+    func getTrailerID(filmName: String, filmYear: String) {
+        sharedApi.getYouTubeTrailer(filmName: filmName, filmYear: filmYear) { [weak self] result  in
             guard let self = self else { return }
                 switch result {
                 case .success(let videoID):

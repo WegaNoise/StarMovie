@@ -63,10 +63,12 @@ final class MainMovieCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func getDataForCollectionViewCell(imagePath: String, filmName: String, dateRelis: String){
-        movieImageView.getImageMovie(url: imagePath, plaseholderImage: UIImage(named: "plaseholderIconDark")!)
-        movieNameLabel.text = filmName
-        movieYearLabel.text = dateRelis
+    func configDataForCollectionViewCell(movie: Movie){
+        movieImageView.getImageMovie(url: movie.posterPath ?? "", plaseholderImage: UIImage(named: "plaseholderIconDark")!)
+        movieNameLabel.text = movie.title
+        let dateFormatter = DateFormatter()
+        let releaseMovieYear = dateFormatter.onlyYearString(from: movie.releaseDate ?? Date())
+        movieYearLabel.text = releaseMovieYear
     }
 }
 

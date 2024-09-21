@@ -17,7 +17,7 @@ final class MoviePageViewController: UIViewController {
     
     var presenter: MoviePagePresenterProtocol?
 
-    private let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
     
     private let movieScrollView = MovieScrollView()
     
@@ -32,12 +32,10 @@ private extension MoviePageViewController {
     func initialize() {
         configNavBar()
         view.backgroundColor = Resources.Colors.mainColorGray
-        activityIndicator.color = Resources.Colors.accentColor
-        activityIndicator.changeState(.showAndStart)
+        activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
         view.addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.height.width.equalTo(150)
+            make.center.equalToSuperview()
         }
     }
     
@@ -62,7 +60,7 @@ extension MoviePageViewController: MoviePageViewProtocol {
             }
             self.movieScrollView.movieScrollDelegate = self
             guard let movie = self.presenter?.movie else { return }
-            self.activityIndicator.changeState(.stopAndHidden)
+            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
             self.movieScrollView.addContentInScrollView(movie: movie)
         }
     }

@@ -73,6 +73,8 @@ final class MovieScrollView: UIScrollView {
         return dateLabel
     }()
     
+    lazy var dateFormater = DateFormatter()
+    
     private let ratingProgressView = RatingProgressView()
     
     private let langTitleLabel: UILabel = {
@@ -131,7 +133,7 @@ final class MovieScrollView: UIScrollView {
         filmNameLabel.text = movie.title
         movieImageView.getImageMovie(url: movie.posterPath ?? " - ", plaseholderImage: UIImage(named: "plaseholderIconDark")!)
         overviewLabel.text = movie.overview
-        dateLabel.text = movie.releaseDate
+        dateLabel.text = dateFormater.formatedDateForPage(from: movie.releaseDate ?? Date())
         ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
         playerYT.loadVideoID(movie.trailerID ?? "film")
         configWatchLaterButton(inLibrary: movie.watchLater ?? false)

@@ -10,5 +10,6 @@ target 'StarMovie' do
  pod 'Alamofire'
  pod 'Kingfisher'
  pod 'YouTubePlayer'
+ pod 'lottie-ios'
 
 end
