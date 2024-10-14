@@ -8,14 +8,15 @@ import Foundation
 
 protocol MoviePagePresenterProtocol: AnyObject {
     var movie: Movie? { get }
-    func getTrailerID(id: String)
+    func getTrailerID(id: String?)
     func pressBeckButtton()
     func viewDidLoad()
     func pressedButtonLibrary()
     func receivedNewStarsValue(newValue: Int)
+    func traillerReceivingError() 
 }
 
-class MoviePagePresenter {
+final class MoviePagePresenter {
     weak var view: MoviePageViewProtocol?
     var router: MoviePageRouterProtocol
     var interactor: MoviePageInteractorProtocol
@@ -35,13 +36,13 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         interactor.getTrailerID(filmName: movie?.title ?? "", filmYear: releaseYear)
     }
     
-    func getTrailerID(id: String) {
+    func getTrailerID(id: String?) {
         movie?.trailerID = id
         movie?.watchLater = false
         view?.startShowData()
     }
     
-    func pressBeckButtton(){
+    func pressBeckButtton() {
         router.goOutMoviePage()
     }
     
@@ -55,7 +56,11 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         }
     }
     
-    func receivedNewStarsValue(newValue: Int){
+    func receivedNewStarsValue(newValue: Int) {
         print("new stars value - \(newValue)")
+    }
+    
+    func traillerReceivingError() {
+        getTrailerID(id: nil)
     }
 }

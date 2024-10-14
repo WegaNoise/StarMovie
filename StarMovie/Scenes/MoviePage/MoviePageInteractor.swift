@@ -14,23 +14,22 @@ protocol MoviePageInteractorProtocol: AnyObject {
 class MoviePageInteractor: MoviePageInteractorProtocol {
     weak var presenter: MoviePagePresenterProtocol?
     let movie: Movie
-    let sharedApi = NetworkManager.access
+    let sharedApi = NetworkManager.shared
     
-    init(movie: Movie){
+    init(movie: Movie) {
         self.movie = movie
-        
     }
     
     func getTrailerID(filmName: String, filmYear: String) {
-        sharedApi.getYouTubeTrailer(filmName: filmName, filmYear: filmYear) { [weak self] result  in
+        sharedApi.getYouTubeTrailer(filmName: filmName, filmYear: filmYear) { [weak self] result in
             guard let self = self else { return }
                 switch result {
                 case .success(let videoID):
                     self.presenter?.getTrailerID(id: videoID.videoID)
                 case .failure(let error):
+                    presenter?.traillerReceivingError()
                     print(error.localizedDescription)
             }
         }
     }
-    
 }

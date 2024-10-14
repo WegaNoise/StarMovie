@@ -14,7 +14,7 @@ protocol HomePageInteractorProtocol: AnyObject {
 class HomePageInteractor: HomePageInteractorProtocol {
     
     weak var presenter: HomePagePresenterProtocol?
-    let sharedApi = NetworkManager.access
+    let sharedApi = NetworkManager.shared
     
     func startLoadFormNetwork() {
         sharedApi.getPopularMovieList { [weak self] result in
@@ -23,6 +23,7 @@ class HomePageInteractor: HomePageInteractorProtocol {
             case .success(let movies):
                 presenter?.getDataPopularMovie(movies: movies)
             case .failure(let error):
+                presenter?.dataRetrievalError(error: error as! NetworkErrors)
                 print(error.localizedDescription)
             }
         }

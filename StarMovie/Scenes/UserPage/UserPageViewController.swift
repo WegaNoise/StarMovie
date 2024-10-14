@@ -15,8 +15,6 @@ class UserPageViewController: UIViewController {
     
     var presenter: UserPagePresenterProtocol?
     
-    let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initialize()
@@ -27,12 +25,6 @@ private extension UserPageViewController {
     func initialize() {
         view.backgroundColor = Resources.Colors.mainColorGray
         navigationItem.title = Resources.Titls.userPage
-        
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
     }
 }
 

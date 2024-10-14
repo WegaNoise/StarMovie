@@ -20,6 +20,7 @@ protocol SearchPagePresenterProtocol: AnyObject {
     func searchDataReceived(searchMovieList: [Movie])
     func closeSearch()
     func selectedMovie(index: IndexPath)
+    func receivedError(error: NetworkErrors)
 }
 
 final class SearchPagePresenter {
@@ -107,5 +108,9 @@ extension SearchPagePresenter: SearchPagePresenterProtocol {
     func selectedMovie(index: IndexPath) {
         guard let selectMovie = movies?[index.row] else { return }
         router.openMoviePage(movie: selectMovie)
+    }
+    
+    func receivedError(error: NetworkErrors) {
+        view?.showOrHideErrorView(show: true, error: error)
     }
 }

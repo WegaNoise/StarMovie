@@ -14,6 +14,7 @@ protocol SearchPageViewProtocol: AnyObject {
     func hideHorizontalMenu()
     func showHorizontalMenu()
     func hideCollectionVeiw(isHide: Bool)
+    func showOrHideErrorView(show: Bool, error: NetworkErrors)
 }
 
 final class SearchPageViewController: UIViewController {
@@ -27,6 +28,8 @@ final class SearchPageViewController: UIViewController {
     private let horizontalMenuCollectionView = MenuCollectionView()
     
     private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
+    
+    private lazy var errorViewAlert = ErrorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +111,22 @@ extension SearchPageViewController: SearchPageViewProtocol {
         } completion: { (_) in
             UIView.animate(withDuration: 0.25) {
                 self.horizontalMenuCollectionView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }
+        }
+    }
+    
+    func showOrHideErrorView(show: Bool, error: NetworkErrors) {
+        guard show else {
+            errorViewAlert.removeFromSuperview()
+            return
+        }
+        DispatchQueue.main.async {
+            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+            self.filmCollectionView.isHidden = true
+            self.errorViewAlert.configView(error: error)
+            self.view.addSubview(self.errorViewAlert)
+            self.errorViewAlert.snp.makeConstraints { make in
+                make.center.equalToSuperview()
             }
         }
     }

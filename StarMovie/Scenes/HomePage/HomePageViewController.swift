@@ -10,6 +10,7 @@ import SnapKit
 
 protocol HomePageViewProtocol: AnyObject {
     func initializeCollectionView()
+    func showErrorView(error: NetworkErrors)
 }
 
 final class HomePageViewController: UIViewController {
@@ -19,6 +20,8 @@ final class HomePageViewController: UIViewController {
     private let homeCollectionView = HomeMovieCollectionView()
     
     private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
+    
+    private lazy var errorAlertView = ErrorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +47,6 @@ private extension HomePageViewController {
 extension HomePageViewController: HomePageViewProtocol {
     func initializeCollectionView() {
         activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-        
         view.addSubview(homeCollectionView)
         homeCollectionView.dataSource = self
         homeCollectionView.selectItemDelegate = self
@@ -54,22 +56,35 @@ extension HomePageViewController: HomePageViewProtocol {
             make.bottom.top.equalToSuperview()
         }
     }
+    
+    func showErrorView(error: NetworkErrors) {
+        DispatchQueue.main.async {
+            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+            self.view.addSubview(self.errorAlertView)
+            self.errorAlertView.configView(error: error)
+            self.errorAlertView.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+        }
+    }
 }
 
-extension HomePageViewController: UICollectionViewDataSource{
+extension HomePageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter?.movies?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
-        guard let movie = presenter?.returnDataByMovie(index: indexPath.row) else { return UICollectionViewCell() }
+        guard let movie = presenter?.returnDataByMovie(index: indexPath.row) else {
+            return UICollectionViewCell()
+        }
         cell.configDataForCollectionViewCell(movie: movie)
         return cell
     }
 }
 
-extension HomePageViewController: SelectedItemCollectionViewProtocol{
+extension HomePageViewController: SelectedItemCollectionViewProtocol {
     func selectedItem(index: IndexPath) {
         presenter?.selectMovie(index: index)
     }

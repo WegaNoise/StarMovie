@@ -96,7 +96,9 @@ final class MovieScrollView: UIScrollView {
         return label
     }()
     
-    private let playerYT: YouTubePlayerView = {
+    private var playerView = UIView()
+    
+    private lazy var playerYT: YouTubePlayerView = {
         let player = YouTubePlayerView()
         player.layer.cornerRadius = 20
         player.layer.borderWidth = 1.5
@@ -104,6 +106,18 @@ final class MovieScrollView: UIScrollView {
         player.backgroundColor = Resources.Colors.mainColorDark
         player.clipsToBounds = true
         return player
+    }()
+    
+    private lazy var playerErrorImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "StarMovie?")
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 20
+        imageView.layer.borderWidth = 1.5
+        imageView.layer.borderColor = Resources.Colors.mainColorLight.cgColor
+        imageView.backgroundColor = Resources.Colors.mainColorDark
+        imageView.clipsToBounds = true
+        return imageView
     }()
     
     private let watchLaterButton: UIButton = {
@@ -135,10 +149,11 @@ final class MovieScrollView: UIScrollView {
         overviewLabel.text = movie.overview
         dateLabel.text = dateFormater.formatedDateForPage(from: movie.releaseDate ?? Date())
         ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
-        playerYT.loadVideoID(movie.trailerID ?? "film")
         configWatchLaterButton(inLibrary: movie.watchLater ?? false)
         fiveStarView.setupUserMark(mark: nil)
         languageLabel.text = movie.lang?.uppercased()
+        configPlayerView(trailerID: movie.trailerID)
+    
         addElementsInContentView()
     }
     
@@ -165,6 +180,15 @@ private extension MovieScrollView {
         }
     }
     
+    func configPlayerView(trailerID: String?) {
+        if trailerID != nil {
+            playerYT.loadVideoID(trailerID ?? "film")
+            playerView = playerYT
+        } else {
+            playerView = playerErrorImageView
+        }
+    }
+    
     func addElementsInContentView() {
         let screenSize = UIScreen.main.bounds.size
         contentView.addSubviews(filmNameLabel,
@@ -176,7 +200,7 @@ private extension MovieScrollView {
                                     ratingProgressView,
                                     langTitleLabel,
                                     languageLabel),
-                                playerYT,
+                                playerView,
                                 watchLaterButton,
                                 fiveStarView)
         
@@ -230,14 +254,14 @@ private extension MovieScrollView {
             make.directionalHorizontalEdges.equalToSuperview()
         }
         
-        playerYT.snp.makeConstraints { make in
+        playerView.snp.makeConstraints { make in
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
             make.top.equalTo(overviewLabel.snp.bottom).offset(10)
             make.height.equalTo(250)
         }
         
         watchLaterButton.snp.makeConstraints { make in
-            make.top.equalTo(playerYT.snp.bottom).inset(-20)
+            make.top.equalTo(playerView.snp.bottom).inset(-20)
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
         }
         

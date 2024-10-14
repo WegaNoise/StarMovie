@@ -13,7 +13,7 @@ protocol SearchPageInteractorProtocol: AnyObject {
 class SearchPageInteractor: SearchPageInteractorProtocol {
   
     weak var presenter: SearchPagePresenterProtocol?
-    let networkManager = NetworkManager.access
+    let networkManager = NetworkManager.shared
     
     func getMovieListInSelectedGenres(id: String) {
         networkManager.getMovieListInGenre(genereID: id) { [weak self] result in
@@ -22,6 +22,7 @@ class SearchPageInteractor: SearchPageInteractorProtocol {
             case .success(let movies):
                 presenter?.receivedMovieList(movieList: movies)
             case .failure(let error):
+                presenter?.receivedError(error: error as! NetworkErrors)
                 print(error.localizedDescription)
             }
         }
@@ -34,6 +35,7 @@ class SearchPageInteractor: SearchPageInteractorProtocol {
             case .success(let foundMovies):
                 presenter?.searchDataReceived(searchMovieList: foundMovies)
             case .failure(let error):
+                presenter?.receivedError(error:  error as! NetworkErrors)
                 print(error.localizedDescription)
             }
         }

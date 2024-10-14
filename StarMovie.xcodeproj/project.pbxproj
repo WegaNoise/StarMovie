@@ -11,6 +11,7 @@
 		D2365DB92BE94A57005AC6FC /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2365DB82BE94A57005AC6FC /* MenuCell.swift */; };
 		D2365DBD2BEBDDCD005AC6FC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2365DBC2BEBDDCD005AC6FC /* NetworkManager.swift */; };
 		D2365DC12BED4193005AC6FC /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2365DC02BED4193005AC6FC /* Movie.swift */; };
+		D23951372CAF00BF0085A104 /* NertworkErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23951362CAF00BF0085A104 /* NertworkErrorManager.swift */; };
 		D23E720E2BC8509000EC4B7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23E720D2BC8509000EC4B7E /* AppDelegate.swift */; };
 		D23E72172BC8509100EC4B7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D23E72162BC8509100EC4B7E /* Assets.xcassets */; };
 		D23E721A2BC8509100EC4B7E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D23E72192BC8509100EC4B7E /* Base */; };
@@ -46,6 +47,7 @@
 		D29377F62C30612400106BE4 /* UILabel + .swift in Sources */ = {isa = PBXBuildFile; fileRef = D29377F52C30612400106BE4 /* UILabel + .swift */; };
 		D29377F82C3C603800106BE4 /* RatingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29377F72C3C603800106BE4 /* RatingProgressView.swift */; };
 		D29538CC2C9F414D0040E14B /* DateFormatter + .swift in Sources */ = {isa = PBXBuildFile; fileRef = D29538CB2C9F414D0040E14B /* DateFormatter + .swift */; };
+		D2A063772CA9CF7700EBBE56 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A063762CA9CF7700EBBE56 /* ErrorView.swift */; };
 		D2C6BCF72C580C1500238694 /* YouTube.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C6BCF62C580C1500238694 /* YouTube.swift */; };
 		D2CCB2A72C2349F400A0596D /* UIImageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2A62C2349F400A0596D /* UIImageView +.swift */; };
 		D2CCB2AE2C273D2600A0596D /* MoviePageModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CCB2A92C273D2600A0596D /* MoviePageModuleBuilder.swift */; };
@@ -66,6 +68,7 @@
 		D2365DB82BE94A57005AC6FC /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		D2365DBC2BEBDDCD005AC6FC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D2365DC02BED4193005AC6FC /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		D23951362CAF00BF0085A104 /* NertworkErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NertworkErrorManager.swift; sourceTree = "<group>"; };
 		D23E720A2BC8509000EC4B7E /* StarMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23E720D2BC8509000EC4B7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D23E72162BC8509100EC4B7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		D29377F52C30612400106BE4 /* UILabel + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + .swift"; sourceTree = "<group>"; };
 		D29377F72C3C603800106BE4 /* RatingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingProgressView.swift; sourceTree = "<group>"; };
 		D29538CB2C9F414D0040E14B /* DateFormatter + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter + .swift"; sourceTree = "<group>"; };
+		D2A063762CA9CF7700EBBE56 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		D2C6BCF62C580C1500238694 /* YouTube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTube.swift; sourceTree = "<group>"; };
 		D2CCB2A62C2349F400A0596D /* UIImageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView +.swift"; sourceTree = "<group>"; };
 		D2CCB2A92C273D2600A0596D /* MoviePageModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePageModuleBuilder.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				D2365DBC2BEBDDCD005AC6FC /* NetworkManager.swift */,
+				D23951362CAF00BF0085A104 /* NertworkErrorManager.swift */,
 			);
 			path = NetworkServices;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				D23E72332BC8588D00EC4B7E /* CollectionViewCell */,
 				D26120892BD2F31700B0761C /* TabBar */,
 				D26120662BCC499100B0761C /* NavigationConroller.swift */,
+				D2A063762CA9CF7700EBBE56 /* ErrorView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -423,7 +429,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					D23E72092BC8509000EC4B7E = {
 						CreatedOnToolsVersion = 15.3;
@@ -513,6 +519,7 @@
 				D270F5252C838EB200A46396 /* UIActivityIndicatorView +.swift in Sources */,
 				D246DDA22C613AA9006FF569 /* FiveStarsRatingButton.swift in Sources */,
 				D2365DB92BE94A57005AC6FC /* MenuCell.swift in Sources */,
+				D23951372CAF00BF0085A104 /* NertworkErrorManager.swift in Sources */,
 				D23E720E2BC8509000EC4B7E /* AppDelegate.swift in Sources */,
 				D23E72382BC85CB700EC4B7E /* MainMovieCollectionViewCell.swift in Sources */,
 				D23E722A2BC8531B00EC4B7E /* HomePageModuleBuilder.swift in Sources */,
@@ -539,6 +546,7 @@
 				D2365DB62BE6AFA7005AC6FC /* MenuCollectionView.swift in Sources */,
 				D23E722D2BC8531B00EC4B7E /* HomePageViewController.swift in Sources */,
 				D29377F82C3C603800106BE4 /* RatingProgressView.swift in Sources */,
+				D2A063772CA9CF7700EBBE56 /* ErrorView.swift in Sources */,
 				D2C6BCF72C580C1500238694 /* YouTube.swift in Sources */,
 				D26120712BD0259300B0761C /* SearchPageModuleBuilder.swift in Sources */,
 				D2CCB2A72C2349F400A0596D /* UIImageView +.swift in Sources */,
