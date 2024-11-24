@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import YouTubePlayer
+//import YouTubePlayer
 
 protocol MovieScrollViewProtocol: AnyObject {
     func pressedButtonAddMovie()
@@ -98,15 +98,15 @@ final class MovieScrollView: UIScrollView {
     
     private var playerView = UIView()
     
-    private lazy var playerYT: YouTubePlayerView = {
-        let player = YouTubePlayerView()
-        player.layer.cornerRadius = 20
-        player.layer.borderWidth = 1.5
-        player.layer.borderColor = Resources.Colors.mainColorLight.cgColor
-        player.backgroundColor = Resources.Colors.mainColorDark
-        player.clipsToBounds = true
-        return player
-    }()
+//    private lazy var playerYT: YouTubePlayerView = {
+//        let player = YouTubePlayerView()
+//        player.layer.cornerRadius = 20
+//        player.layer.borderWidth = 1.5
+//        player.layer.borderColor = Resources.Colors.mainColorLight.cgColor
+//        player.backgroundColor = Resources.Colors.mainColorDark
+//        player.clipsToBounds = true
+//        return player
+//    }()
     
     private lazy var playerErrorImageView: UIImageView = {
         let imageView = UIImageView()
@@ -150,10 +150,9 @@ final class MovieScrollView: UIScrollView {
         dateLabel.text = dateFormater.formatedDateForPage(from: movie.releaseDate ?? Date())
         ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
         configWatchLaterButton(inLibrary: movie.watchLater ?? false)
-        fiveStarView.setupUserMark(mark: nil)
+        fiveStarView.setupUserMark(mark: movie.userRating)
         languageLabel.text = movie.lang?.uppercased()
-        configPlayerView(trailerID: movie.trailerID)
-    
+//        configPlayerView(trailerID: movie.trailerID)
         addElementsInContentView()
     }
     
@@ -182,8 +181,9 @@ private extension MovieScrollView {
     
     func configPlayerView(trailerID: String?) {
         if trailerID != nil {
-            playerYT.loadVideoID(trailerID ?? "film")
-            playerView = playerYT
+//            playerYT.loadVideoID(trailerID ?? "film")
+//            playerView = playerYT
+            print("123445")
         } else {
             playerView = playerErrorImageView
         }
@@ -274,7 +274,7 @@ private extension MovieScrollView {
     }
 }
 
-extension MovieScrollView: FiveStarsRatingProtocol{
+extension MovieScrollView: FiveStarsRatingProtocol {
     func changeStarRating(newValue: Int) {
         movieScrollDelegate?.starRatingChanged(newValue: newValue)
     }

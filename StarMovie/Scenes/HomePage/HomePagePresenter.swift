@@ -9,9 +9,9 @@ import Foundation
 
 protocol HomePagePresenterProtocol: AnyObject {
     var movies: [Movie]? { get }
-    func viewToReady()
-    func getDataPopularMovie(movies: [Movie])
-    func returnDataByMovie(index: Int) -> Movie?
+    func viewDidLoad()
+    func getDataPopularMovie(movies: [Movie]?)
+    func returnMovieForIndex(index: Int) -> Movie?
     func selectMovie(index: IndexPath)
     func dataRetrievalError(error: NetworkErrors)
 }
@@ -30,16 +30,19 @@ class HomePagePresenter {
 }
 
 extension HomePagePresenter: HomePagePresenterProtocol {
-    func viewToReady() {
-        interactor.startLoadFormNetwork()
+    func viewDidLoad() {
+        interactor.fetchDataMovie()
     }
     
-    func getDataPopularMovie(movies: [Movie]){
+    func getDataPopularMovie(movies: [Movie]?){
+        guard movies?.count != 0 else {
+            dataRetrievalError(error: .unknownError)
+            return }
         self.movies = movies
         view?.initializeCollectionView()
     }
     
-    func returnDataByMovie(index: Int) -> Movie?{
+    func returnMovieForIndex(index: Int) -> Movie?{
         guard let movie = movies?[index] else { return nil }
         return movie
     }

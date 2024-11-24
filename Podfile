@@ -9,7 +9,7 @@ target 'StarMovie' do
  pod 'SnapKit'
  pod 'Alamofire'
  pod 'Kingfisher'
- pod 'YouTubePlayer'
+ pod 'youtube-ios-player-helper'
  pod 'lottie-ios'
 
 end

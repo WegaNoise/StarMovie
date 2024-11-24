@@ -24,7 +24,6 @@ final class FiveStarsRatingButton: UIStackView {
         btn.contentVerticalAlignment = .fill
         btn.contentHorizontalAlignment = .fill
         btn.imageEdgeInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
-        btn.addTarget(self, action: #selector(pressingStar), for: .touchUpInside)
         return btn
     }()
     
@@ -45,8 +44,8 @@ final class FiveStarsRatingButton: UIStackView {
     
     func setupUserMark(mark: Int?) {
         let stars = [starButton1, starButton2, starButton3, starButton4, starButton5]
-        guard mark != nil else { return }
-        for i in 0...(mark ?? 0) {
+        guard mark != nil, mark != 0 else { return }
+        for i in 0...((mark ?? 0) - 1) {
             changeStarButton(selected: true, forViews: stars[i])
         }
     }
@@ -54,6 +53,7 @@ final class FiveStarsRatingButton: UIStackView {
 
 private extension FiveStarsRatingButton {
     func configStackView() {
+        clearStarsButton.addTarget(self, action: #selector(pressingStar), for: .touchUpInside)
         axis = .horizontal
         spacing = 12
         distribution = .fillEqually

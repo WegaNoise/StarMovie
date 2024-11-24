@@ -11,6 +11,9 @@ protocol UserPagePresenterProtocol: AnyObject {
     func userDataLoaded(user: User)
     func userPressedEditProfile(userName: String, userAvatar: Data)
     func loadUserData()
+    func menuItemsUserPage() -> Int
+    func cellDataForIndexPath(indexPath: IndexPath) -> MenuItem
+    func userSelectedMenuItem(indexPath: IndexPath)
 }
 
 class UserPagePresenter {
@@ -31,6 +34,25 @@ extension UserPagePresenter: UserPagePresenterProtocol {
     
     func userDataLoaded(user: User) {
         view?.enterUserData(user)
+    }
+    
+    func menuItemsUserPage() -> Int {
+        return Resources.UserPageLibrary.menuItems.count
+    }
+    
+    func cellDataForIndexPath(indexPath: IndexPath) -> MenuItem {
+        return Resources.UserPageLibrary.menuItems[indexPath.row]
+    }
+    
+    func userSelectedMenuItem(indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            router.showWatchLaterPage()
+        case 1:
+            router.showMovieRatingsPage()
+        default:
+            break
+        }
     }
     
     func userPressedEditProfile(userName: String, userAvatar: Data) {

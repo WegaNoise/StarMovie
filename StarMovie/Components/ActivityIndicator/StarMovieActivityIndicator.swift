@@ -56,6 +56,15 @@ final class StarMovieActivityIndicator: UIView {
         layer.cornerRadius = 15
     }
     
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        if let superview = self.superview {
+            self.snp.makeConstraints { make in
+                make.center.equalTo(superview)
+            }
+        }
+    }
+    
     func changeStateActivityIndicator(state: StateActivityIndicator) {
         switch state {
         case .showAndAnimate:
@@ -70,7 +79,6 @@ final class StarMovieActivityIndicator: UIView {
 
 private extension StarMovieActivityIndicator {
     func configView(sizeView: ActivityIndicatorSize) {
-//        backgroundColor = Resources.Colors.mainColorDark
         alpha = 0.5
         self.snp.makeConstraints { make in
             make.size.equalTo(sizeView.size)

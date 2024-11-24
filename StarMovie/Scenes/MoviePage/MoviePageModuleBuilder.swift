@@ -9,9 +9,9 @@ import UIKit
 
 class MoviePageModuleBuilder {
     static func build(movie: Movie) -> MoviePageViewController {
-        let interactor = MoviePageInteractor(movie: movie)
+        let interactor = MoviePageInteractor()
         let router = MoviePageRouter()
-        let presenter = MoviePagePresenter(interactor: interactor, router: router)
+        let presenter = MoviePagePresenter(interactor: interactor, router: router, movie: movie)
         let viewController = MoviePageViewController()
         presenter.view  = viewController
         viewController.presenter = presenter

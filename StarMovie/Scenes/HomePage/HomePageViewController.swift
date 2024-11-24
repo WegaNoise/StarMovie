@@ -26,7 +26,7 @@ final class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialize()
-        presenter?.viewToReady()
+        presenter?.viewDidLoad()
     }
 }
 
@@ -37,9 +37,6 @@ private extension HomePageViewController {
         navigationItem.title = Resources.Titls.homePage
         activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
         view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
     }
 }
 
@@ -51,8 +48,7 @@ extension HomePageViewController: HomePageViewProtocol {
         homeCollectionView.dataSource = self
         homeCollectionView.selectItemDelegate = self
         homeCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
+            make.directionalHorizontalEdges.equalToSuperview().inset(10)
             make.bottom.top.equalToSuperview()
         }
     }
@@ -76,7 +72,7 @@ extension HomePageViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
-        guard let movie = presenter?.returnDataByMovie(index: indexPath.row) else {
+        guard let movie = presenter?.returnMovieForIndex(index: indexPath.row) else {
             return UICollectionViewCell()
         }
         cell.configDataForCollectionViewCell(movie: movie)

@@ -10,7 +10,7 @@ import SnapKit
 
 protocol MoviePageViewProtocol: AnyObject {
     func startShowData()
-    func movieInLibrary(inLibrary: Bool)
+    func changeAddInLibraryButton(inLibrary: Bool)
 }
 
 final class MoviePageViewController: UIViewController {
@@ -34,13 +34,10 @@ private extension MoviePageViewController {
         view.backgroundColor = Resources.Colors.mainColorGray
         activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
         view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
     }
     
     func configNavBar(){
-        navigationItem.title = "Movie"
+        navigationItem.title = Resources.Titls.moviePage
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(pressBackButton))
     }
     
@@ -65,14 +62,14 @@ extension MoviePageViewController: MoviePageViewProtocol {
         }
     }
     
-    func movieInLibrary(inLibrary: Bool){
+    func changeAddInLibraryButton(inLibrary: Bool) {
         movieScrollView.configWatchLaterButton(inLibrary: inLibrary)
     }
 }
 
 extension MoviePageViewController: MovieScrollViewProtocol {
     func pressedButtonAddMovie() {
-        presenter?.pressedButtonLibrary()
+        presenter?.pressedButtonAddLibrary()
     }
     
     func starRatingChanged(newValue: Int) {

@@ -51,10 +51,6 @@ private extension SearchPageViewController {
     func addCompontntsForScreen(){
         view.addSubviews(searchTextField, horizontalMenuCollectionView, activityIndicator)
         
-        activityIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        
         searchTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
             make.directionalHorizontalEdges.equalToSuperview().inset(10)

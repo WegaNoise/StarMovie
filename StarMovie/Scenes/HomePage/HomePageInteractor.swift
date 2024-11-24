@@ -8,23 +8,25 @@
 import Foundation
 
 protocol HomePageInteractorProtocol: AnyObject {
-    func startLoadFormNetwork()
+    func fetchDataMovie()
 }
 
-class HomePageInteractor: HomePageInteractorProtocol {
+final class HomePageInteractor: HomePageInteractorProtocol {
     
     weak var presenter: HomePagePresenterProtocol?
-    let sharedApi = NetworkManager.shared
+    private let shared = NetworkManager.shared
     
-    func startLoadFormNetwork() {
-        sharedApi.getPopularMovieList { [weak self] result in
-            guard let self = self else { return }
-            switch result{
-            case .success(let movies):
-                presenter?.getDataPopularMovie(movies: movies)
-            case .failure(let error):
-                presenter?.dataRetrievalError(error: error as! NetworkErrors)
-                print(error.localizedDescription)
+    func fetchDataMovie() {
+        Task {
+            do {
+                let movieList = try await shared.geMovieListForHomePage()
+                await MainActor.run {
+                    presenter?.getDataPopularMovie(movies: movieList)
+                }
+            } catch let error as NetworkErrors {
+                presenter?.dataRetrievalError(error: error)
+            } catch {
+                presenter?.dataRetrievalError(error: .unknownError)
             }
         }
     }

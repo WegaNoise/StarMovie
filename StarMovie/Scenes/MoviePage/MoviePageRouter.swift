@@ -9,7 +9,7 @@ protocol MoviePageRouterProtocol {
     func goOutMoviePage()
 }
 
-class MoviePageRouter: MoviePageRouterProtocol {
+final class MoviePageRouter: MoviePageRouterProtocol {
     weak var viewController: MoviePageViewController?
     
     func goOutMoviePage(){

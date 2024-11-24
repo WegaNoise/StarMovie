@@ -3,14 +3,14 @@ PODS:
   - Kingfisher (7.12.0)
   - lottie-ios (4.3.3)
   - SnapKit (5.6.0)
-  - YouTubePlayer (0.7.2)
+  - youtube-ios-player-helper (1.0.4)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher
   - lottie-ios
   - SnapKit
-  - YouTubePlayer
+  - youtube-ios-player-helper
 
 SPEC REPOS:
   trunk:
@@ -18,15 +18,15 @@ SPEC REPOS:
     - Kingfisher
     - lottie-ios
     - SnapKit
-    - YouTubePlayer
+    - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
   Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
   lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
-  YouTubePlayer: 2b5f2830d8f9b2cde942083211291e382c9e6bd5
+  youtube-ios-player-helper: e9b97535e816db3152179d84d999bc1807ecd689
 
-PODFILE CHECKSUM: b6d52e54514754a9428ccdf63faa20c87922bcca
+PODFILE CHECKSUM: a79cdf5d700dc94a1e7e6d391c6c9d9a1b96125f
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.16.2

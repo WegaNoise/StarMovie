@@ -7,38 +7,42 @@
 import Foundation
 
 protocol MoviePagePresenterProtocol: AnyObject {
-    var movie: Movie? { get }
-    func getTrailerID(id: String?)
+    var movie: Movie { get }
+    func configMovieIteem(movieDetails: MovieDetails)
     func pressBeckButtton()
     func viewDidLoad()
-    func pressedButtonLibrary()
+    func pressedButtonAddLibrary()
     func receivedNewStarsValue(newValue: Int)
-    func traillerReceivingError() 
+    func failedMovieConfiguration()
 }
 
 final class MoviePagePresenter {
     weak var view: MoviePageViewProtocol?
     var router: MoviePageRouterProtocol
     var interactor: MoviePageInteractorProtocol
-    var movie: Movie?
+    var movie: Movie
     
-    init(interactor: MoviePageInteractorProtocol, router: MoviePageRouterProtocol) {
+    init(interactor: MoviePageInteractorProtocol, router: MoviePageRouterProtocol, movie: Movie) {
         self.interactor = interactor
         self.router = router
+        self.movie = movie
     }
 }
 
 extension MoviePagePresenter: MoviePagePresenterProtocol {
     func viewDidLoad() {
-        movie = interactor.movie
-        let dateFormatter = DateFormatter()
-        let releaseYear = dateFormatter.onlyYearString(from: movie?.releaseDate ?? Date())
-        interactor.getTrailerID(filmName: movie?.title ?? "", filmYear: releaseYear)
+        interactor.getMovieDetails(movie)
     }
     
-    func getTrailerID(id: String?) {
-        movie?.trailerID = id
-        movie?.watchLater = false
+    func configMovieIteem(movieDetails: MovieDetails) {
+        movie.posterData = movieDetails.posterData
+        movie.userRating = movieDetails.userRating
+        movie.watchLater = movieDetails.watchLater
+        movie.trailerID = movieDetails.trailerID
+        view?.startShowData()
+    }
+    
+    func failedMovieConfiguration() {
         view?.startShowData()
     }
     
@@ -46,21 +50,19 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         router.goOutMoviePage()
     }
     
-    func pressedButtonLibrary() {
-        guard let value = movie?.watchLater else { return }
-        movie?.watchLater = !value
-        if movie?.watchLater == true {
-            view?.movieInLibrary(inLibrary: false)
-        }else if movie?.watchLater == false {
-            view?.movieInLibrary(inLibrary: true)
+    func pressedButtonAddLibrary() {
+        guard let watchLater = movie.watchLater else { return }
+        switch watchLater {
+        case true :
+            interactor.removeMovieFromWatchlist(movie: movie)
+            view?.changeAddInLibraryButton(inLibrary: false)
+        case false:
+            interactor.addMovieToWatchlist(movie: movie)
+            view?.changeAddInLibraryButton(inLibrary: true)
         }
     }
     
     func receivedNewStarsValue(newValue: Int) {
-        print("new stars value - \(newValue)")
-    }
-    
-    func traillerReceivingError() {
-        getTrailerID(id: nil)
+        interactor.changeMovieRating(movie: movie, rating: newValue)
     }
 }

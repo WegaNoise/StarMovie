@@ -7,29 +7,49 @@
 import Foundation
 
 protocol MoviePageInteractorProtocol: AnyObject {
-    var movie: Movie { get }
-    func getTrailerID(filmName: String, filmYear: String)
+    func getMovieDetails(_ movie: Movie)
+    func addMovieToWatchlist(movie: Movie)
+    func removeMovieFromWatchlist(movie: Movie)
+    func changeMovieRating(movie: Movie, rating: Int)
 }
 
-class MoviePageInteractor: MoviePageInteractorProtocol {
+final class MoviePageInteractor: MoviePageInteractorProtocol {
     weak var presenter: MoviePagePresenterProtocol?
-    let movie: Movie
-    let sharedApi = NetworkManager.shared
+    private let sharedApi = NetworkManager.shared
+    private let coreDataManager = CoreDataManager.shared
     
-    init(movie: Movie) {
-        self.movie = movie
-    }
-    
-    func getTrailerID(filmName: String, filmYear: String) {
-        sharedApi.getYouTubeTrailer(filmName: filmName, filmYear: filmYear) { [weak self] result in
-            guard let self = self else { return }
-                switch result {
-                case .success(let videoID):
-                    self.presenter?.getTrailerID(id: videoID.videoID)
-                case .failure(let error):
-                    presenter?.traillerReceivingError()
-                    print(error.localizedDescription)
+    func getMovieDetails(_ movie: Movie) {
+        let entity = coreDataManager.fetchMovieByID(movie.id)
+        let dateFormatter = DateFormatter()
+        Task {
+            do {
+                let posterData = try await sharedApi.getImageForMovie(imageLink: movie.posterPath ?? "")
+                let trailerID = try await sharedApi.getYouTubeTrailer(filmName: movie.title ?? "",
+                                                                      filmYear: dateFormatter.onlyYearString(from: movie.releaseDate ?? Date()))
+                let movieDatails = MovieDetails(posterData: posterData,
+                                                userRating: Int(entity?.userRating ?? 0),
+                                                watchLater: entity?.watchLater ?? false,
+                                                trailerID: trailerID)
+                await MainActor.run {
+                    presenter?.configMovieIteem(movieDetails: movieDatails)
+                }
+            } catch {
+                await MainActor.run {
+                    presenter?.failedMovieConfiguration()
+                }
             }
         }
+    }
+    
+    func addMovieToWatchlist(movie: Movie) {
+        coreDataManager.addMovieToWatchLater(movie: movie)
+    }
+    
+    func removeMovieFromWatchlist(movie: Movie) {
+        coreDataManager.removeMovieFromWatchLater(movie: movie)
+    }
+    
+    func changeMovieRating(movie: Movie, rating: Int) {
+        coreDataManager.updateMovieRating(movie: movie, newRating: rating)
     }
 }
