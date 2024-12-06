@@ -7,36 +7,37 @@
 
 protocol SearchPageInteractorProtocol: AnyObject {
     func getMovieListInSelectedGenres(id: String)
-    func searchMovieOnRequest(reqest: String)
+    func searchMovieOnRequest(request: String)
 }
 
-class SearchPageInteractor: SearchPageInteractorProtocol {
+final class SearchPageInteractor: SearchPageInteractorProtocol {
   
     weak var presenter: SearchPagePresenterProtocol?
-    let networkManager = NetworkManager.shared
+    private let networkManager = NetworkManager.shared
     
     func getMovieListInSelectedGenres(id: String) {
-        networkManager.getMovieListInGenre(genereID: id) { [weak self] result in
-            guard let self = self else { return }
-            switch result{
-            case .success(let movies):
-                presenter?.receivedMovieList(movieList: movies)
-            case .failure(let error):
-                presenter?.receivedError(error: error as! NetworkErrors)
-                print(error.localizedDescription)
+        Task {
+            do {
+                let foundMovies = try await networkManager.getMovieListInGenre(genereID: id)
+                await MainActor.run {
+                    presenter?.receivedMovieList(movieList: foundMovies)
+                }
+            } catch {
+                await presenter?.receivedError(error: error as? NetworkErrors ?? .unknownError)
             }
         }
     }
     
-    func searchMovieOnRequest(reqest: String) {
-        networkManager.searhMovie(query: reqest) { [weak self] result in
-            guard let self = self else { return }
-            switch result{
-            case .success(let foundMovies):
-                presenter?.searchDataReceived(searchMovieList: foundMovies)
-            case .failure(let error):
-                presenter?.receivedError(error:  error as! NetworkErrors)
-                print(error.localizedDescription)
+    
+    func searchMovieOnRequest(request: String) {
+        Task {
+            do {
+                let foundMovies = try await networkManager.searhMovieList(query: request)
+                await MainActor.run {
+                    presenter?.searchDataReceived(searchMovieList: foundMovies)
+                }
+            } catch let error{
+                await presenter?.receivedError(error: error as? NetworkErrors ?? .unknownError)
             }
         }
     }

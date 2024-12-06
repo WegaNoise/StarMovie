@@ -32,7 +32,6 @@ private extension SearchCollectionView {
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
         delaysContentTouches = false
-        backgroundColor = Resources.Colors.mainColorGray
         contentInset.top = 20
         contentInset.bottom = 150
         register(MainMovieCollectionViewCell.self, forCellWithReuseIdentifier: MainMovieCollectionViewCell.searchId)

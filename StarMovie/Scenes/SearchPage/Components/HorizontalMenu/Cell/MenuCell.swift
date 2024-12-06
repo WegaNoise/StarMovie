@@ -12,7 +12,7 @@ final class MenuCell: UICollectionViewCell {
     
     static let id = "Menu Cell"
     
-    let categoryMenuLabel: UILabel = {
+    private let categoryMenuLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = Resources.Colors.mainColorLight
@@ -31,8 +31,10 @@ final class MenuCell: UICollectionViewCell {
     
     override var isSelected: Bool{
         didSet{
-            backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
-            categoryMenuLabel.textColor = self.isSelected ? Resources.Colors.mainColorGray : Resources.Colors.mainColorLight
+            UIView.animate(withDuration: 0.3) {
+                self.backgroundColor = self.isSelected ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
+                self.categoryMenuLabel.textColor = self.isSelected ? Resources.Colors.mainColorGray : Resources.Colors.mainColorLight
+            }
         }
     }
     
@@ -40,6 +42,10 @@ final class MenuCell: UICollectionViewCell {
         super.layoutSubviews()
         layer.cornerRadius = 10
         layer.masksToBounds = true
+    }
+    
+    func configTitleCell(_ title: String) {
+        categoryMenuLabel.text = title
     }
 }
 

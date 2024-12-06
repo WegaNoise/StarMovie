@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CustomTabBarController: UITabBarController{
+final class CustomTabBarController: UITabBarController {
     
     private let customTabBar = CustomTabBar()
     
@@ -19,7 +19,7 @@ final class CustomTabBarController: UITabBarController{
     }
 }
 
-private extension CustomTabBarController{
+private extension CustomTabBarController {
     func setupTabBarItems() {
         let searchPage = generateVC(viewController: SearchPageModuleBuilder.build(),
                                     title: nil,

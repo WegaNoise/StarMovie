@@ -14,7 +14,7 @@ final class CoreDataManager {
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-   
+    
     private init() {
         persistentContainer = NSPersistentContainer(name: "StarMovieDataBase", managedObjectModel: CoreDataManager.createManagerObjectModel())
         persistentContainer.loadPersistentStores{ storageDiscriptio, error in
@@ -80,7 +80,7 @@ final class CoreDataManager {
         }
         saveContext()
     }
-
+    
     func removeMovieFromWatchLater(movie: Movie) {
         if let existingMovie = fetchMovieByID(movie.id) {
             if existingMovie.isRated == false {
@@ -125,7 +125,7 @@ final class CoreDataManager {
         }
     }
     
-//  Method for tests
+    //  Method for tests
     func clearAllStarMovieDataBase() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = MovieEntity.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -151,7 +151,7 @@ private extension CoreDataManager {
         idAttribute.name = "id"
         idAttribute.attributeType = .integer64AttributeType
         idAttribute.isOptional = false
- 
+        
         let posterDataAttribute = NSAttributeDescription()
         posterDataAttribute.name = "posterData"
         posterDataAttribute.attributeType = .binaryDataAttributeType
@@ -194,7 +194,7 @@ private extension CoreDataManager {
         trailerIDAttribute.attributeType = .stringAttributeType
         trailerIDAttribute.isOptional = true
         trailerIDAttribute.defaultValue = nil
-
+        
         
         let userRatingAttribute = NSAttributeDescription()
         userRatingAttribute.name = "userRating"
@@ -207,7 +207,7 @@ private extension CoreDataManager {
         isWatchedAttribute.attributeType = .booleanAttributeType
         isWatchedAttribute.isOptional = false
         isWatchedAttribute.defaultValue = false
- 
+        
         entity.properties = [idAttribute,
                              posterDataAttribute,
                              owerviewAttribute,

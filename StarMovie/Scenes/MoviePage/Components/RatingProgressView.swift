@@ -7,18 +7,17 @@
 
 import UIKit
 import QuartzCore
-import SnapKit
 
 final class RatingProgressView: UIView {
     
-    let backCircleLayer = CAShapeLayer()
-    let progressCircleLayer = CAShapeLayer()
-    
-    let ratingLabel: UILabel = {
+    private let backCircleLayer = CAShapeLayer()
+    private let progressCircleLayer = CAShapeLayer()
+    private let ratingLabel: UILabel = {
         let label = UILabel()
         label.font = Resources.Fonts.gillSansFont(size: 19, blod: false)
         label.textAlignment = .center
         label.textColor = Resources.Colors.accentColor
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -31,7 +30,7 @@ final class RatingProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getRatingValue(rating: Double){
+    func getRatingValue(rating: Double) {
         setupConstraints()
         let valueRating = rating / 10
         ratingLabel.text = rating.description
@@ -40,7 +39,7 @@ final class RatingProgressView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-      updateSizeCircleLayer()
+        updateSizeCircleLayer()
     }
 }
 
@@ -90,8 +89,9 @@ private extension RatingProgressView {
     
     func setupConstraints() {
         addSubview(ratingLabel)
-        ratingLabel.snp.makeConstraints { label in
-            label.centerX.centerY.equalToSuperview()
-        }
+        NSLayoutConstraint.activate([
+            ratingLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            ratingLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 }

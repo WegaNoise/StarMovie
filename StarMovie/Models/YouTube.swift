@@ -7,7 +7,7 @@
 
 import Foundation
 
-//model for parsing YouTubeAPI v3
+//model for parsing YouTubeAPI
 struct YouTube: Codable {
     let pageInfo: PageInfo
     let items: [Item]

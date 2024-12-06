@@ -54,8 +54,8 @@ final class MainMovieCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = 10
     }
     
-    override var isHighlighted: Bool{
-        didSet{
+    override var isHighlighted: Bool {
+        didSet {
             movieNameLabel.backgroundColor = self.isHighlighted ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
             movieYearLabel.backgroundColor = self.isHighlighted ? Resources.Colors.accentColor : Resources.Colors.mainColorDark
             movieNameLabel.textColor = self.isHighlighted ? Resources.Colors.mainColorDark : Resources.Colors.mainColorLight
@@ -63,7 +63,7 @@ final class MainMovieCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configDataForCollectionViewCell(movie: Movie){
+    func configDataForCollectionViewCell(movie: Movie) {
         movieImageView.getImageMovie(url: movie.posterPath ?? "", plaseholderImage: UIImage(named: "plaseholderIconDark")!)
         movieNameLabel.text = movie.title
         let dateFormatter = DateFormatter()
@@ -73,7 +73,7 @@ final class MainMovieCollectionViewCell: UICollectionViewCell {
 }
 
 private extension MainMovieCollectionViewCell {
-    func setupConstrainsts(){
+    func setupConstrainsts() {
         contentView.addSubviews(movieImageView, movieNameLabel, movieYearLabel)
         
         movieImageView.snp.makeConstraints { image in

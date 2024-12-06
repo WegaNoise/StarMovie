@@ -31,11 +31,11 @@ final class MoviePageInteractor: MoviePageInteractorProtocol {
                                                 watchLater: entity?.watchLater ?? false,
                                                 trailerID: trailerID)
                 await MainActor.run {
-                    presenter?.configMovieIteem(movieDetails: movieDatails)
+                    presenter?.configMovieItem(movieDetails: movieDatails)
                 }
             } catch {
                 await MainActor.run {
-                    presenter?.failedMovieConfiguration()
+                    presenter?.failedMovieConfiguration(error: error as? NetworkErrors ?? .unknownError)
                 }
             }
         }

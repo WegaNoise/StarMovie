@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CustomTabBar: UITabBar{
+final class CustomTabBar: UITabBar {
     
     override func draw(_ rect: CGRect) {
         configUI()
@@ -30,7 +30,7 @@ final class CustomTabBar: UITabBar{
 }
 
 //MARK: - Draw figure tabBar
-private extension CustomTabBar{
+private extension CustomTabBar {
     func configUI() {
         let path: UIBezierPath = getTabBarPath()
         let figure = CAShapeLayer()

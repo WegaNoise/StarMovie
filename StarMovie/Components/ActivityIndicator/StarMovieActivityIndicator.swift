@@ -86,7 +86,7 @@ private extension StarMovieActivityIndicator {
         addAnimationViewForView()
     }
     
-    func addAnimationViewForView(){
+    func addAnimationViewForView() {
         addSubview(animationView)
         animationView.snp.makeConstraints { make in
             make.size.equalToSuperview().offset(-20)

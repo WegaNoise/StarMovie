@@ -7,26 +7,19 @@
 
 import Foundation
 
-protocol NetworkServicesMovie {
-    func getPopularMovieList(complition: @escaping (Result<[Movie], Error>) -> Void)
+protocol NetworkServicesProtocol {
+    
 }
 
-final class NetworkManager: NetworkServicesMovie {
-    
+final class NetworkManager: NetworkServicesProtocol {
     static let shared = NetworkManager()
-    
     private let errorManager = NertworkErrorManager()
     
-    func geMovieListForHomePage() async throws -> [Movie]? {
+    func getMovieListForHomePage() async throws -> [Movie]? {
         var movies:[Movie] = []
-        for page in 1...5 {
-            let url = URL(string: "https://api.themoviedb.org/3/discover/movie")!
-            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-            urlComponents?.queryItems = [URLQueryItem(name: "api_key", value: Resources.UrlMovieDB.keyApi),
-                                         URLQueryItem(name: "include_adult", value: "true"),
-                                         URLQueryItem(name: "page", value: "\(page)")]
-            guard let urlWithComponents = urlComponents?.url else { throw NetworkErrors.invalidURL}
-            let (data, _ ) = try await URLSession.shared.data(from: urlWithComponents)
+        for page in 1...6 {
+            guard let url = urlConfigurator(.homePage, with: page.description) else { throw NetworkErrors.invalidURL }
+            let (data, _ ) = try await URLSession.shared.data(from: url)
             do {
                 let result = try JSONDecoder().decode(Movies.self, from: data)
                 for movie in result.results {
@@ -39,53 +32,26 @@ final class NetworkManager: NetworkServicesMovie {
         return movies
     }
     
-    func getPopularMovieList(complition: @escaping (Result<[Movie], any Error>) -> Void) {
-        guard let url = URL(string: "\(Resources.UrlMovieDB.baseURL)movie/popular?api_key=\(Resources.UrlMovieDB.keyApi)") else {
-            complition(.failure(NetworkErrors.invalidURL))
-            return
-        }
-        URLSession.shared.dataTask(with: url){ data, response, error in
-            if let error = error as? URLError {
-                complition(.failure(self.errorManager.defineError(error: error)))
-                return
-            }
-            guard let data = data else {
-                complition(.failure(NetworkErrors.invalidData))
-                return
-            }
-            DispatchQueue.main.async {
-                do{
-                    let result = try JSONDecoder().decode(Movies.self, from: data)
-                    complition(.success(result.results))
-                }catch{
-                    complition(.failure(NetworkErrors.invalidJSON))
-                }
-            }
-        }.resume()
-    }
-    
-    func getImageForMovie(imageLink: String) async throws -> Data{
-        guard let url = URL(string: "\(Resources.UrlMovieDB.imageUrlPath)\(imageLink)") else {
-            throw URLError(.badURL)}
+    func getImageForMovie(imageLink: String) async throws -> Data {
+        guard let url = urlConfigurator(.imageMovie, with: imageLink) else { throw NetworkErrors.invalidURL }
         let (data, _ ) = try await URLSession.shared.data(from: url)
         return data
     }
     
     func searchMovieByID(id: Int) async throws -> Movie? {
-        guard let url = URL(string: "\(Resources.UrlMovieDB.movieByIdUrlPath)\(id)?api_key=\(Resources.UrlMovieDB.keyApi)") else { return nil }
+        guard let url = urlConfigurator(.movieById, with: id.description) else { throw NetworkErrors.invalidURL }
         let (data, _ ) = try await URLSession.shared.data(from: url)
         do {
             let result = try JSONDecoder().decode(Movie.self, from: data)
             return result
         } catch {
-            return nil
+            throw NetworkErrors.invalidData
         }
     }
     
     func getYouTubeTrailer(filmName: String, filmYear: String) async throws -> String? {
-        guard let url = URL(string: "\(Resources.UrlYouTube.baseSearhcURL)?key=\(Resources.UrlYouTube.keyAPI)&q=\(filmName + " " + filmYear) trailer") else {
-            throw NetworkErrors.invalidURL
-        }
+        let query = "\(filmName) \(filmYear)"
+        guard let url = urlConfigurator(.ytTrailer, with: query) else { throw NetworkErrors.invalidURL }
         let (data, _ ) = try await URLSession.shared.data(from: url)
         do {
             let result = try JSONDecoder().decode(YouTube.self, from: data)
@@ -97,55 +63,26 @@ final class NetworkManager: NetworkServicesMovie {
             return nil
         }
     }
-
     
-    func searhMovie(query: String, complition: @escaping (Result<[Movie], any Error>) -> Void) {
-        guard let url = URL(string: "\(Resources.UrlMovieDB.searchUrlPath)?api_key=\(Resources.UrlMovieDB.keyApi)&query=\(query)&include_adult=true") else {
-            complition(.failure(NetworkErrors.invalidURL))
-            return
+    func searhMovieList(query: String) async throws -> [Movie]? {
+        guard let url = urlConfigurator(.searchMovie, with: query) else { throw NetworkErrors.invalidURL }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        do {
+            let result = try JSONDecoder().decode(Movies.self, from: data)
+            return result.results
+        } catch {
+            throw NetworkErrors.invalidJSON
         }
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error as? URLError {
-                complition(.failure(self.errorManager.defineError(error: error)))
-                return
-            }
-            guard let data = data else {
-                complition(.failure(NetworkErrors.invalidData))
-                return
-            }
-            DispatchQueue.main.async {
-                do {
-                    let result = try JSONDecoder().decode(Movies.self, from: data)
-                    complition(.success(result.results))
-                } catch {
-                    complition(.failure(NetworkErrors.invalidJSON))
-                }
-            }
-        }.resume()
     }
     
-    func getMovieListInGenre(genereID: String, complition: @escaping (Result<[Movie], any Error>) -> Void) {
-        guard let url = URL(string: "\(Resources.UrlMovieDB.genreUrlPath)?api_key=\(Resources.UrlMovieDB.keyApi)&with_genres=\(genereID)&include_adult=true") else {
-            complition(.failure(NetworkErrors.invalidURL))
-            return
+    func getMovieListInGenre(genereID: String) async throws -> [Movie] {
+        guard let url = urlConfigurator(.genreMovie, with: genereID) else { throw NetworkErrors.invalidURL }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        do {
+            let result = try JSONDecoder().decode(Movies.self, from: data)
+            return result.results
+        } catch {
+            throw NetworkErrors.invalidJSON
         }
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let error = error as? URLError {
-                complition(.failure(self.errorManager.defineError(error: error)))
-                return
-            }
-            guard let data = data else {
-                complition(.failure(NetworkErrors.invalidData))
-                return
-            }
-            DispatchQueue.main.async {
-                do {
-                    let result = try JSONDecoder().decode(Movies.self, from: data)
-                    complition(.success(result.results))
-                } catch {
-                    complition(.failure(NetworkErrors.invalidJSON))
-                }
-            }
-        }.resume()
     }
 }

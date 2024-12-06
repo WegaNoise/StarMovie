@@ -6,14 +6,15 @@
 //
 
 protocol SearchPageRouterProtocol {
-    func openMoviePage(movie: Movie)
+    func navigateToMovieDetails(movie: Movie)
 }
 
 class SearchPageRouter: SearchPageRouterProtocol {
     weak var viewController: SearchPageViewController?
     
-    func openMoviePage(movie: Movie){
+    func navigateToMovieDetails(movie: Movie){
+        guard let viewController = viewController else { return }
         let moviePage = MoviePageModuleBuilder.build(movie: movie)
-        viewController?.navigationController?.pushViewController(moviePage, animated: true)
+        viewController.navigationController?.pushViewController(moviePage, animated: true)
     }
 }

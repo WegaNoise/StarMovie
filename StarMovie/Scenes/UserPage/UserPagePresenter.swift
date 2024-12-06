@@ -47,9 +47,9 @@ extension UserPagePresenter: UserPagePresenterProtocol {
     func userSelectedMenuItem(indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            router.showWatchLaterPage()
+            router.pushWatchLaterPage()
         case 1:
-            router.showMovieRatingsPage()
+            router.pushMovieRatingsPage()
         default:
             break
         }

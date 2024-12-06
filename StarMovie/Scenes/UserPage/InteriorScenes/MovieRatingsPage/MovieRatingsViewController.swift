@@ -11,6 +11,7 @@ import SnapKit
 protocol MovieRatingsViewProtocol: AnyObject {
     func showRatingCollectionView()
     func ratingMovieNotFound()
+    func updatedDataCollectionView()
 }
 
 final class MovieRatingsViewController: UIViewController {
@@ -30,6 +31,13 @@ final class MovieRatingsViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         return collectionView
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = Resources.Colors.accentColor
+        refreshControl.addTarget(self, action: #selector(movieListUpdate), for: .valueChanged)
+        return refreshControl
     }()
 
     override func viewDidLoad() {
@@ -65,6 +73,11 @@ private extension MovieRatingsViewController {
             make.directionalHorizontalEdges.top.bottom.equalToSuperview()
         }
     }
+    
+    @objc
+    func movieListUpdate() {
+        presenter?.movieListUpdate()
+    }
 }
 
 // MARK: - MovieRatingsViewProtocol
@@ -73,12 +86,22 @@ extension MovieRatingsViewController: MovieRatingsViewProtocol {
         layoutRatingCollectionView()
         ratingCollectionView.delegate = self
         ratingCollectionView.dataSource = self
+        ratingCollectionView.refreshControl = refreshControl
         ratingCollectionView.register(MovieRatingCollectionViewCell.self, forCellWithReuseIdentifier: MovieRatingCollectionViewCell.id)
     }
     
     func ratingMovieNotFound() {
         notFoundMovieView.configurateDescriptionForView(description: Resources.DescriptionNotFoundView.userRating.text)
         view.addSubview(notFoundMovieView)
+    }
+    
+    func updatedDataCollectionView() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.ratingCollectionView.reloadData()
+            if self.refreshControl.isRefreshing {
+                self.ratingCollectionView.refreshControl?.endRefreshing()
+            }
+        }
     }
 }
 

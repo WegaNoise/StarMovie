@@ -10,7 +10,8 @@ import SnapKit
 
 protocol WatchLaterViewProtocol: AnyObject {
     func showWatchLaterCollectionView()
-    func showNotFoundView() 
+    func showNotFoundView()
+    func updatedDataCollectionView()
 }
 
 final class WatchLaterViewController: UIViewController {
@@ -31,6 +32,13 @@ final class WatchLaterViewController: UIViewController {
         collection.showsHorizontalScrollIndicator = false
         collection.showsVerticalScrollIndicator = false
         return collection
+    }()
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = Resources.Colors.accentColor
+        refreshControl.addTarget(self, action: #selector(movieListUpdate), for: .valueChanged)
+        return refreshControl
     }()
 
     override func viewDidLoad() {
@@ -65,6 +73,11 @@ private extension WatchLaterViewController {
             make.directionalHorizontalEdges.top.bottom.equalToSuperview()
         }
     }
+    
+    @objc
+    func movieListUpdate() {
+        presenter?.movieListUpdate()
+    }
 }
 
 // MARK: - WatchLaterViewProtocol
@@ -73,12 +86,22 @@ extension WatchLaterViewController: WatchLaterViewProtocol {
         watchLaterCollectionViewLayout()
         watchLaterCollectionView.delegate = self
         watchLaterCollectionView.dataSource = self
+        watchLaterCollectionView.refreshControl = refreshControl
         watchLaterCollectionView.register(WatchLaterCollectionViewCell.self, forCellWithReuseIdentifier: WatchLaterCollectionViewCell.id)
     }
     
     func showNotFoundView() {
         notFoundMovieView.configurateDescriptionForView(description: Resources.DescriptionNotFoundView.watchLater.text)
         view.addSubview(notFoundMovieView)
+    }
+    
+    func updatedDataCollectionView() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.watchLaterCollectionView.reloadData()
+            if self.refreshControl.isRefreshing {
+                self.watchLaterCollectionView.refreshControl?.endRefreshing()
+            }
+        }
     }
 }
 

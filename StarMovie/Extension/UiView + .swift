@@ -9,7 +9,7 @@ import UIKit
 
 extension UIView{
     @discardableResult
-    func addSubviews(_ views: UIView...) -> UIView{
+    func addSubviews(_ views: UIView...) -> UIView {
         for view in views{
             self.addSubview(view)
         }

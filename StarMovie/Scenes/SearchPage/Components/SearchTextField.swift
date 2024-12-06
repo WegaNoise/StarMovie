@@ -70,7 +70,7 @@ extension SearchTextField: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextFieldDelegate?.shouldPressedReturn(text: text ?? "")
-        resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
     

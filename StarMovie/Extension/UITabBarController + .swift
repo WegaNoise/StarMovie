@@ -7,8 +7,8 @@
 
 import UIKit
 
-extension UITabBarController{
-    func generateVC(viewController: UIViewController, title: String?, image: UIImage?) -> UIViewController{
+extension UITabBarController {
+    func generateVC(viewController: UIViewController, title: String?, image: UIImage?) -> UIViewController {
         let viewController = viewController
         viewController.tabBarItem.title = title
         viewController.tabBarItem.image = image

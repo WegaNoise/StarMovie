@@ -13,6 +13,7 @@ protocol WatchLaterPresenterProtocol: AnyObject {
     func pressedIsWatchedCheckbox(_  indexCell: Int)
     func selectedMovie(_ index: Int)
     func presentMoviePage(movie: Movie?)
+    func movieListUpdate()
 }
 
 final class WatchLaterPresenter {
@@ -20,6 +21,7 @@ final class WatchLaterPresenter {
     var router: WatchLaterRouterProtocol
     var interactor: WatchLaterInteractorProtocol
     var movieList: [MovieEntity] = []
+    private var updateFlag: Bool = false
     
     init(interactor: WatchLaterInteractorProtocol, router: WatchLaterRouterProtocol) {
         self.interactor = interactor
@@ -36,7 +38,12 @@ extension WatchLaterPresenter: WatchLaterPresenterProtocol {
         movieList = movies
         guard movieList.count != 0 else { view?.showNotFoundView()
             return }
+        if updateFlag == true {
+            view?.updatedDataCollectionView()
+            return
+        }
         view?.showWatchLaterCollectionView()
+        updateFlag = true
     }
     
     func pressBeckButtton() {
@@ -46,6 +53,10 @@ extension WatchLaterPresenter: WatchLaterPresenterProtocol {
     func pressedIsWatchedCheckbox(_  indexCell: Int) {
         let movie = movieList[indexCell]
         interactor.changeIsWatchedState(movie: movie)
+    }
+    
+    func movieListUpdate() {
+        interactor.fetchWatchLaterMovies()
     }
     
     func selectedMovie(_ index: Int) {

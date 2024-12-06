@@ -17,7 +17,7 @@ final class HomePageViewController: UIViewController {
     
     var presenter: HomePagePresenterProtocol?
     
-    private let homeCollectionView = HomeMovieCollectionView()
+    private let moviesCollectionView = HomeMovieCollectionView()
     
     private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
     
@@ -35,6 +35,10 @@ private extension HomePageViewController {
     func initialize() {
         view.backgroundColor = Resources.Colors.mainColorGray
         navigationItem.title = Resources.Titls.homePage
+        configureActivityIndicator()
+    }
+    
+    func configureActivityIndicator() {
         activityIndicator.changeStateActivityIndicator(state: .showAndAnimate)
         view.addSubview(activityIndicator)
     }
@@ -44,23 +48,21 @@ private extension HomePageViewController {
 extension HomePageViewController: HomePageViewProtocol {
     func initializeCollectionView() {
         activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-        view.addSubview(homeCollectionView)
-        homeCollectionView.dataSource = self
-        homeCollectionView.selectItemDelegate = self
-        homeCollectionView.snp.makeConstraints { make in
+        view.addSubview(moviesCollectionView)
+        moviesCollectionView.dataSource = self
+        moviesCollectionView.moviesSelectionDelegate = self
+        moviesCollectionView.snp.makeConstraints { make in
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
             make.bottom.top.equalToSuperview()
         }
     }
     
     func showErrorView(error: NetworkErrors) {
-        DispatchQueue.main.async {
-            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-            self.view.addSubview(self.errorAlertView)
-            self.errorAlertView.configView(error: error)
-            self.errorAlertView.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
+        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+        view.addSubview(self.errorAlertView)
+        errorAlertView.configView(error: error)
+        errorAlertView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
@@ -71,7 +73,7 @@ extension HomePageViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = homeCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
+        let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: MainMovieCollectionViewCell.homeId, for: indexPath) as! MainMovieCollectionViewCell
         guard let movie = presenter?.returnMovieForIndex(index: indexPath.row) else {
             return UICollectionViewCell()
         }
@@ -81,7 +83,7 @@ extension HomePageViewController: UICollectionViewDataSource {
 }
 
 extension HomePageViewController: SelectedItemCollectionViewProtocol {
-    func selectedItem(index: IndexPath) {
+    func moviesSelection(index: IndexPath) {
         presenter?.selectMovie(index: index)
     }
 }

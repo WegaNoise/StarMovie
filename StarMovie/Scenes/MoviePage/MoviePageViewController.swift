@@ -11,6 +11,7 @@ import SnapKit
 protocol MoviePageViewProtocol: AnyObject {
     func startShowData()
     func changeAddInLibraryButton(inLibrary: Bool)
+    func showErrorView(error: NetworkErrors)
 }
 
 final class MoviePageViewController: UIViewController {
@@ -20,6 +21,8 @@ final class MoviePageViewController: UIViewController {
     private let activityIndicator = StarMovieActivityIndicator(sizeView: .medium)
     
     private let movieScrollView = MovieScrollView()
+    
+    private lazy var errorView = ErrorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,11 +41,11 @@ private extension MoviePageViewController {
     
     func configNavBar(){
         navigationItem.title = Resources.Titls.moviePage
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(pressBackButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapBackButton))
     }
     
     @objc 
-    func pressBackButton(){
+    func didTapBackButton(){
         presenter?.pressBeckButtton()
     }
 }
@@ -50,20 +53,24 @@ private extension MoviePageViewController {
 // MARK: - MoviePageViewProtocol
 extension MoviePageViewController: MoviePageViewProtocol {
     func startShowData() {
-        DispatchQueue.main.async {
-            self.view.addSubview(self.movieScrollView)
-            self.movieScrollView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-            self.movieScrollView.movieScrollDelegate = self
-            guard let movie = self.presenter?.movie else { return }
-            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-            self.movieScrollView.addContentInScrollView(movie: movie)
+        view.addSubview(self.movieScrollView)
+        movieScrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
+        movieScrollView.movieScrollDelegate = self
+        guard let movie = presenter?.movie else { return }
+        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+        movieScrollView.addContentInScrollView(movie: movie)
     }
     
     func changeAddInLibraryButton(inLibrary: Bool) {
         movieScrollView.configWatchLaterButton(inLibrary: inLibrary)
+    }
+    
+    func showErrorView(error: NetworkErrors) {
+        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+        view.addSubview(errorView)
+        errorView.configView(error: error)
     }
 }
 

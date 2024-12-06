@@ -13,7 +13,7 @@ protocol SearchPageViewProtocol: AnyObject {
     func newMovieListReceived()
     func hideHorizontalMenu()
     func showHorizontalMenu()
-    func hideCollectionVeiw(isHide: Bool)
+    func hideCollectionView(isHide: Bool)
     func showOrHideErrorView(show: Bool, error: NetworkErrors)
 }
 
@@ -48,7 +48,7 @@ private extension SearchPageViewController {
         addCompontntsForScreen()
     }
     
-    func addCompontntsForScreen(){
+    func addCompontntsForScreen() {
         view.addSubviews(searchTextField, horizontalMenuCollectionView, activityIndicator)
         
         searchTextField.snp.makeConstraints { make in
@@ -62,6 +62,16 @@ private extension SearchPageViewController {
             make.directionalHorizontalEdges.equalToSuperview()
             make.top.equalTo(searchTextField.snp.bottom).inset(-10)
             make.height.equalTo(40)
+        }
+    }
+    
+    func animationHorizontalMenu(show: Bool) {
+        UIView.animate(withDuration: 0.25, delay: 0) { [weak self] in
+            self?.horizontalMenuCollectionView.transform = CGAffineTransform(scaleX: 1, y: show ? 1 : 0.01)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.25) { [weak self] in
+                self?.filmCollectionView.transform = CGAffineTransform(translationX: 0, y: show ? 0 : -50)
+            }
         }
     }
 }
@@ -81,34 +91,22 @@ extension SearchPageViewController: SearchPageViewProtocol {
         }
     }
     
-    func hideCollectionVeiw(isHide: Bool) {
+    func hideCollectionView(isHide: Bool) {
         activityIndicator.changeStateActivityIndicator(state: isHide ? .showAndAnimate : .hideAndStop)
         filmCollectionView.isHidden = isHide
     }
     
     func newMovieListReceived() {
-        hideCollectionVeiw(isHide: false)
+        hideCollectionView(isHide: false)
         filmCollectionView.reloadData()
     }
     
     func hideHorizontalMenu() {
-        UIView.animate(withDuration: 0.25, delay: 0) {
-            self.horizontalMenuCollectionView.transform = CGAffineTransform(scaleX: 1, y: 0.01)
-        } completion: { (_) in
-        UIView.animate(withDuration: 0.25) {
-                self.filmCollectionView.transform = CGAffineTransform(translationX: 0, y: -50)
-            }
-        }
+        animationHorizontalMenu(show: false)
     }
     
     func showHorizontalMenu() {
-        UIView.animate(withDuration: 0.25, delay: 0) {
-            self.filmCollectionView.transform = CGAffineTransform(translationX: 0, y: 0)
-        } completion: { (_) in
-            UIView.animate(withDuration: 0.25) {
-                self.horizontalMenuCollectionView.transform = CGAffineTransform(scaleX: 1, y: 1)
-            }
-        }
+        animationHorizontalMenu(show: true)
     }
     
     func showOrHideErrorView(show: Bool, error: NetworkErrors) {
@@ -116,18 +114,17 @@ extension SearchPageViewController: SearchPageViewProtocol {
             errorViewAlert.removeFromSuperview()
             return
         }
-        DispatchQueue.main.async {
-            self.activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-            self.filmCollectionView.isHidden = true
-            self.errorViewAlert.configView(error: error)
-            self.view.addSubview(self.errorViewAlert)
-            self.errorViewAlert.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
+        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
+        filmCollectionView.isHidden = true
+        errorViewAlert.configView(error: error)
+        view.addSubview(self.errorViewAlert)
+        errorViewAlert.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
 
+// MARK: - Methods Protocol searchTextField
 extension SearchPageViewController: SearchTextFieldProtocol {
     func didBeginEditing() {
         presenter?.textFielddidBeginEditing()
@@ -146,12 +143,14 @@ extension SearchPageViewController: SearchTextFieldProtocol {
     }
 }
 
+// MARK: - Methods Protocol horizontalMenuCollectionView
 extension SearchPageViewController: HorizontalMenuProtocol {
     func selectedCategory(genresID: Int) {
         presenter?.changeSelectedGenres(id: genresID)
     }
 }
 
+// MARK: - Methods CollectionView
 extension SearchPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter?.movies?.count ?? 0
@@ -165,7 +164,7 @@ extension SearchPageViewController: UICollectionViewDataSource {
     }
 }
 
-extension SearchPageViewController: SearchCollectionViewProtocol{
+extension SearchPageViewController: SearchCollectionViewProtocol {
     func selectedItem(index: IndexPath) {
         presenter?.selectedMovie(index: index)
     }

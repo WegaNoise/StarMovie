@@ -14,6 +14,7 @@ protocol MovieRatingsPresenterProtocol: AnyObject {
     func movieByIndexPath(_ index: IndexPath) -> MovieEntity
     func didSelectMovie(_ index: IndexPath)
     func presentMoviePage(movie: Movie?)
+    func movieListUpdate()
 }
 
 final class MovieRatingsPresenter {
@@ -21,6 +22,7 @@ final class MovieRatingsPresenter {
     private var router: MovieRatingsRouterProtocol
     private var interactor: MovieRatingsInteractorProtocol
     var movieRatingList: [MovieEntity] = []
+    private var updateFlag: Bool = false
 
     init(interactor: MovieRatingsInteractorProtocol, router: MovieRatingsRouterProtocol) {
         self.interactor = interactor
@@ -37,7 +39,16 @@ extension MovieRatingsPresenter: MovieRatingsPresenterProtocol {
         self.movieRatingList = movieList
         guard movieRatingList.count != 0  else { view?.ratingMovieNotFound()
             return }
+        if updateFlag == true {
+            view?.updatedDataCollectionView()
+            return
+        }
         view?.showRatingCollectionView()
+        updateFlag = true
+    }
+    
+    func movieListUpdate() {
+        interactor.fetchMovieRatings()
     }
     
     func pressBeckButtton() {

@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-//import YouTubePlayer
+import youtube_ios_player_helper
 
 protocol MovieScrollViewProtocol: AnyObject {
     func pressedButtonAddMovie()
@@ -54,7 +54,7 @@ final class MovieScrollView: UIScrollView {
 
     private let infoDataView = UIView()
     
-    private let titleReleseDateLabel: UILabel = {
+    private let titleReleaseDateLabel: UILabel = {
         let releseDate = UILabel()
         releseDate.textColor = Resources.Colors.mainColorLight
         releseDate.font = Resources.Fonts.gillSansFont(size: 25, blod: true)
@@ -73,7 +73,7 @@ final class MovieScrollView: UIScrollView {
         return dateLabel
     }()
     
-    lazy var dateFormater = DateFormatter()
+    private let dateFormatter = DateFormatter()
     
     private let ratingProgressView = RatingProgressView()
     
@@ -96,31 +96,26 @@ final class MovieScrollView: UIScrollView {
         return label
     }()
     
-    private var playerView = UIView()
+    private let playerViewContainer: UIView = {
+        let view = UIView()
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 20
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = Resources.Colors.mainColorLight.cgColor
+        view.backgroundColor = Resources.Colors.mainColorDark
+        return view
+    }()
     
-//    private lazy var playerYT: YouTubePlayerView = {
-//        let player = YouTubePlayerView()
-//        player.layer.cornerRadius = 20
-//        player.layer.borderWidth = 1.5
-//        player.layer.borderColor = Resources.Colors.mainColorLight.cgColor
-//        player.backgroundColor = Resources.Colors.mainColorDark
-//        player.clipsToBounds = true
-//        return player
-//    }()
+    private lazy var playerYT = YTPlayerView()
     
     private lazy var playerErrorImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "StarMovie?")
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 20
-        imageView.layer.borderWidth = 1.5
-        imageView.layer.borderColor = Resources.Colors.mainColorLight.cgColor
-        imageView.backgroundColor = Resources.Colors.mainColorDark
-        imageView.clipsToBounds = true
         return imageView
     }()
     
-    private let watchLaterButton: UIButton = {
+    private lazy var watchLaterButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = Resources.Colors.ultraColorLight
         button.layer.cornerRadius = 12
@@ -147,12 +142,12 @@ final class MovieScrollView: UIScrollView {
         filmNameLabel.text = movie.title
         movieImageView.getImageMovie(url: movie.posterPath ?? " - ", plaseholderImage: UIImage(named: "plaseholderIconDark")!)
         overviewLabel.text = movie.overview
-        dateLabel.text = dateFormater.formatedDateForPage(from: movie.releaseDate ?? Date())
+        dateLabel.text = dateFormatter.formatedDateForPage(from: movie.releaseDate ?? Date())
         ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
         configWatchLaterButton(inLibrary: movie.watchLater ?? false)
         fiveStarView.setupUserMark(mark: movie.userRating)
         languageLabel.text = movie.lang?.uppercased()
-//        configPlayerView(trailerID: movie.trailerID)
+        configPlayerView(trailerID: movie.trailerID)
         addElementsInContentView()
     }
     
@@ -180,13 +175,15 @@ private extension MovieScrollView {
     }
     
     func configPlayerView(trailerID: String?) {
-        if trailerID != nil {
-//            playerYT.loadVideoID(trailerID ?? "film")
-//            playerView = playerYT
-            print("123445")
-        } else {
-            playerView = playerErrorImageView
+        playerViewContainer.subviews.forEach { $0.removeFromSuperview() }
+        guard let id = trailerID, !id.isEmpty else {
+            playerViewContainer.addSubview(playerErrorImageView)
+            playerErrorImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+            return
         }
+        playerViewContainer.addSubview(playerYT)
+        playerYT.load(withVideoId: id)
+        playerYT.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     func addElementsInContentView() {
@@ -195,12 +192,12 @@ private extension MovieScrollView {
                                 movieImageView,
                                 overviewLabel,
                                 infoDataView.addSubviews(
-                                    titleReleseDateLabel,
+                                    titleReleaseDateLabel,
                                     dateLabel,
                                     ratingProgressView,
                                     langTitleLabel,
                                     languageLabel),
-                                playerView,
+                                playerViewContainer,
                                 watchLaterButton,
                                 fiveStarView)
         
@@ -228,19 +225,19 @@ private extension MovieScrollView {
             make.bottom.equalTo(movieImageView.snp.bottom)
         }
         
-        titleReleseDateLabel.snp.makeConstraints { make in
+        titleReleaseDateLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
         
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleReleseDateLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleReleaseDateLabel.snp.bottom).offset(10)
             make.directionalHorizontalEdges.equalToSuperview()
         }
         
         langTitleLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
-            make.trailing.equalTo(titleReleseDateLabel.snp.centerX)
+            make.trailing.equalTo(titleReleaseDateLabel.snp.centerX)
         }
         
         languageLabel.snp.makeConstraints { make in
@@ -254,14 +251,14 @@ private extension MovieScrollView {
             make.directionalHorizontalEdges.equalToSuperview()
         }
         
-        playerView.snp.makeConstraints { make in
+        playerViewContainer.snp.makeConstraints { make in
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
             make.top.equalTo(overviewLabel.snp.bottom).offset(10)
             make.height.equalTo(250)
         }
         
         watchLaterButton.snp.makeConstraints { make in
-            make.top.equalTo(playerView.snp.bottom).inset(-20)
+            make.top.equalTo(playerViewContainer.snp.bottom).inset(-20)
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
         }
         

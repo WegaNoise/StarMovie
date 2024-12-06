@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-final class NavigationConroller: UINavigationController{
+final class NavigationConroller: UINavigationController {
     
-    let navAppearence = UINavigationBarAppearance()
+    private let navAppearence = UINavigationBarAppearance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +18,8 @@ final class NavigationConroller: UINavigationController{
     }
 }
 
-private extension NavigationConroller{
-    func initialize(){
+private extension NavigationConroller {
+    func initialize() {
         navAppearence.titleTextAttributes = [
             .foregroundColor: Resources.Colors.mainColorLight,
             .font: Resources.Fonts.gillSansFont(size: 20, blod: true)

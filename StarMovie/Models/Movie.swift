@@ -12,7 +12,6 @@ struct Movies: Codable {
 }
 
 struct Movie: Codable {
-    
     let id: Int
     let originalTitle: String?
     let posterPath: String?

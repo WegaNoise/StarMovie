@@ -19,14 +19,12 @@ final class HomePageInteractor: HomePageInteractorProtocol {
     func fetchDataMovie() {
         Task {
             do {
-                let movieList = try await shared.geMovieListForHomePage()
+                let movieList = try await shared.getMovieListForHomePage()
                 await MainActor.run {
-                    presenter?.getDataPopularMovie(movies: movieList)
+                    presenter?.fetchPopularMovies(movies: movieList)
                 }
-            } catch let error as NetworkErrors {
-                presenter?.dataRetrievalError(error: error)
             } catch {
-                presenter?.dataRetrievalError(error: .unknownError)
+                await presenter?.dataRetrievalError(error: error as? NetworkErrors ?? .unknownError)
             }
         }
     }

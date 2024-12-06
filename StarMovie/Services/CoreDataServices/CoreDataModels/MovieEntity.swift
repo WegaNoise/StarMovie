@@ -20,5 +20,4 @@ public class MovieEntity: NSManagedObject {
     @NSManaged public var trailerID: String?
     @NSManaged public var userRating: Int64
     @NSManaged public var isWatched: Bool
-    
 }

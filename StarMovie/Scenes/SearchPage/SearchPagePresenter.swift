@@ -17,10 +17,10 @@ protocol SearchPagePresenterProtocol: AnyObject {
     func textFieldShouldReturn(text: String)
     func textFieldShouldClear()
     func searchUserMovieData(request: String)
-    func searchDataReceived(searchMovieList: [Movie])
+    func searchDataReceived(searchMovieList: [Movie]?)
     func closeSearch()
     func selectedMovie(index: IndexPath)
-    func receivedError(error: NetworkErrors)
+    func receivedError(error: NetworkErrors) async
 }
 
 final class SearchPagePresenter {
@@ -28,7 +28,8 @@ final class SearchPagePresenter {
     var router: SearchPageRouterProtocol
     var interactor: SearchPageInteractorProtocol
     var movies: [Movie]?
-    var arhiveMovieList: [Movie]?
+    var archiveMovieList: [Movie]?
+    private let idPrimaryCategory = Resources.Genres.genreArray.first?.id.description
 
     init(interactor: SearchPageInteractorProtocol, router: SearchPageRouterProtocol) {
         self.interactor = interactor
@@ -38,11 +39,11 @@ final class SearchPagePresenter {
 
 extension SearchPagePresenter: SearchPagePresenterProtocol {
     func viewDidLoad() {
-        interactor.getMovieListInSelectedGenres(id: "18")
+        interactor.getMovieListInSelectedGenres(id: idPrimaryCategory ?? "18")
     }
     
     func changeSelectedGenres(id: Int) {
-        view?.hideCollectionVeiw(isHide: true)
+        view?.hideCollectionView(isHide: true)
         interactor.getMovieListInSelectedGenres(id: id.description)
     }
     
@@ -57,8 +58,12 @@ extension SearchPagePresenter: SearchPagePresenterProtocol {
     }
     
     func returnDataByMovie(index: Int) -> Movie? {
-        guard let movie = movies?[index] else { return nil }
-        return movie
+        return movies?.element(at: index)
+    }
+    
+    func updateMovieList(newList: [Movie]?) {
+        self.movies = newList
+        view?.newMovieListReceived()
     }
 
 //methods processing user actions with SearchTextField(UITextField)
@@ -79,38 +84,32 @@ extension SearchPagePresenter: SearchPagePresenterProtocol {
     
     func searchUserMovieData(request: String) {
         guard request.count >= 2 else { return }
-        view?.hideCollectionVeiw(isHide: true)
-        interactor.searchMovieOnRequest(reqest: request)
+        view?.hideCollectionView(isHide: true)
+        interactor.searchMovieOnRequest(request: request)
     }
    
 //methods that handle user actions when the user exits or ends the SearchTextField search
-    func searchDataReceived(searchMovieList: [Movie]) {
-        if arhiveMovieList == nil {
-            self.arhiveMovieList = self.movies
-            self.movies = searchMovieList
-            view?.newMovieListReceived()
-        } else {
-            self.movies = searchMovieList
-            view?.newMovieListReceived()
+    func searchDataReceived(searchMovieList: [Movie]?) {
+        if archiveMovieList == nil {
+            self.archiveMovieList = self.movies
         }
+        updateMovieList(newList: searchMovieList)
     }
     
     func closeSearch() {
-        if arhiveMovieList != nil {
-            self.movies = self.arhiveMovieList
-            self.arhiveMovieList = nil
-            view?.newMovieListReceived()
-        } else {
-            view?.newMovieListReceived()
-        }
+        updateMovieList(newList: archiveMovieList ?? movies)
+        archiveMovieList = nil
     }
     
     func selectedMovie(index: IndexPath) {
         guard let selectMovie = movies?[index.row] else { return }
-        router.openMoviePage(movie: selectMovie)
+        router.navigateToMovieDetails(movie: selectMovie)
     }
     
-    func receivedError(error: NetworkErrors) {
-        view?.showOrHideErrorView(show: true, error: error)
+    func receivedError(error: NetworkErrors) async {
+        let error = error as NetworkErrors
+        await MainActor.run {
+            view?.showOrHideErrorView(show: true, error: error)
+        }
     }
 }

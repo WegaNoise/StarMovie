@@ -17,7 +17,7 @@ final class MenuCollectionView: UICollectionView {
     
     private let collectionFlowLayout = UICollectionViewFlowLayout()
     
-    let categoryMenuArray = ["Drama", "Fantasy", "Horror", "Western", "Romance", "Animation", "Documentary", "Comedy"]
+    let categoryMenuArray = Resources.Genres.getGenreNameArray()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: collectionFlowLayout)
@@ -45,26 +45,7 @@ private extension MenuCollectionView{
     }
     
     func getGenreId(indexPath: IndexPath) -> Int {
-        switch indexPath.row {
-        case 0:
-            return 18
-        case 1:
-            return 14
-        case 2:
-            return 27
-        case 3:
-            return 37
-        case 4:
-            return 10752
-        case 5:
-            return 16
-        case 6:
-            return 99
-        case 7:
-            return 35
-        default:
-            return 28
-        }
+        return Resources.Genres.getGenreId(indexPath: indexPath)
     }
 }
 
@@ -75,7 +56,7 @@ extension MenuCollectionView: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuCell.id, for: indexPath) as! MenuCell
-        cell.categoryMenuLabel.text = categoryMenuArray[indexPath.row]
+        cell.configTitleCell(categoryMenuArray[indexPath.row])
         return cell
     }
 }

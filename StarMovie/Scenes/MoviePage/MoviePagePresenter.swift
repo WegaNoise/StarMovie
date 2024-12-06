@@ -8,12 +8,12 @@ import Foundation
 
 protocol MoviePagePresenterProtocol: AnyObject {
     var movie: Movie { get }
-    func configMovieIteem(movieDetails: MovieDetails)
+    func configMovieItem(movieDetails: MovieDetails)
     func pressBeckButtton()
     func viewDidLoad()
     func pressedButtonAddLibrary()
     func receivedNewStarsValue(newValue: Int)
-    func failedMovieConfiguration()
+    func failedMovieConfiguration(error: NetworkErrors)
 }
 
 final class MoviePagePresenter {
@@ -34,7 +34,7 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         interactor.getMovieDetails(movie)
     }
     
-    func configMovieIteem(movieDetails: MovieDetails) {
+    func configMovieItem(movieDetails: MovieDetails) {
         movie.posterData = movieDetails.posterData
         movie.userRating = movieDetails.userRating
         movie.watchLater = movieDetails.watchLater
@@ -42,16 +42,17 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         view?.startShowData()
     }
     
-    func failedMovieConfiguration() {
-        view?.startShowData()
+    func failedMovieConfiguration(error: NetworkErrors) {
+        view?.showErrorView(error: error)
     }
     
     func pressBeckButtton() {
-        router.goOutMoviePage()
+        router.popViewController()
     }
     
     func pressedButtonAddLibrary() {
         guard let watchLater = movie.watchLater else { return }
+        movie.watchLater = !watchLater
         switch watchLater {
         case true :
             interactor.removeMovieFromWatchlist(movie: movie)

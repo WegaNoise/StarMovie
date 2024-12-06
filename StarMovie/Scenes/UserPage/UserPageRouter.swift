@@ -9,8 +9,8 @@ import UIKit
 
 protocol UserPageRouterProtocol {
     func showEditScreen(_ user: User)
-    func showWatchLaterPage()
-    func showMovieRatingsPage()
+    func pushWatchLaterPage()
+    func pushMovieRatingsPage()
 }
 
 class UserPageRouter: UserPageRouterProtocol {
@@ -27,13 +27,13 @@ class UserPageRouter: UserPageRouterProtocol {
         }
     }
     
-    func showWatchLaterPage() {
+    func pushWatchLaterPage() {
         guard let viewController = viewController else { return }
         let watchLaterPage = WatchLaterModuleBuilder.build()
         viewController.navigationController?.pushViewController(watchLaterPage, animated: true)
     }
     
-    func showMovieRatingsPage() {
+    func pushMovieRatingsPage() {
         guard let viewController = viewController else { return }
         let movieRatingsPage = MovieRatingsModuleBuilder.build()
         viewController.navigationController?.pushViewController(movieRatingsPage, animated: true)

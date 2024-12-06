@@ -6,14 +6,15 @@
 //
 
 protocol HomePageRouterProtocol {
-    func openMoviePage(movie: Movie)
+    func navigateToMovieDetails(movie: Movie)
 }
 
 class HomePageRouter: HomePageRouterProtocol {
     weak var viewController: HomePageViewController?
     
-    func openMoviePage(movie: Movie){
+    func navigateToMovieDetails(movie: Movie){
+        guard let viewController = viewController else { return }
         let moviePage = MoviePageModuleBuilder.build(movie: movie)
-        viewController?.navigationController?.pushViewController(moviePage, animated: true)
+        viewController.navigationController?.pushViewController(moviePage, animated: true)
     }
 }
