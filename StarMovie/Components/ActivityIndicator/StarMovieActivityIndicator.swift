@@ -57,12 +57,7 @@ final class StarMovieActivityIndicator: UIView {
     }
     
     override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        if let superview = self.superview {
-            self.snp.makeConstraints { make in
-                make.center.equalTo(superview)
-            }
-        }
+        centerInSuperview()
     }
     
     func changeStateActivityIndicator(state: StateActivityIndicator) {

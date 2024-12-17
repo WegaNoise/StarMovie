@@ -42,6 +42,10 @@ final class ErrorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func didMoveToSuperview() {
+        centerInSuperview()
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = 20

@@ -38,6 +38,7 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         movie.posterData = movieDetails.posterData
         movie.userRating = movieDetails.userRating
         movie.watchLater = movieDetails.watchLater
+        movie.watchLaterButton = configureWatchLaterButton().config
         movie.trailerID = movieDetails.trailerID
         view?.startShowData()
     }
@@ -56,10 +57,20 @@ extension MoviePagePresenter: MoviePagePresenterProtocol {
         switch watchLater {
         case true :
             interactor.removeMovieFromWatchlist(movie: movie)
-            view?.changeAddInLibraryButton(inLibrary: false)
+            view?.changeAddInLibraryButton(setConfig: Resources.WatchLaterButton.notInLibrary.config)
         case false:
             interactor.addMovieToWatchlist(movie: movie)
-            view?.changeAddInLibraryButton(inLibrary: true)
+            view?.changeAddInLibraryButton(setConfig: Resources.WatchLaterButton.inLibrary.config)
+        }
+    }
+    
+    func configureWatchLaterButton() -> Resources.WatchLaterButton {
+        guard let watchLater = movie.watchLater else { return .notInLibrary }
+        switch watchLater {
+        case true :
+            return .inLibrary
+        case false:
+            return .notInLibrary
         }
     }
     

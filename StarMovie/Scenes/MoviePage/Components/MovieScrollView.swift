@@ -60,7 +60,7 @@ final class MovieScrollView: UIScrollView {
         releseDate.font = Resources.Fonts.gillSansFont(size: 25, blod: true)
         releseDate.textAlignment = .center
         releseDate.numberOfLines = 0
-        releseDate.text = "Relese Date:"
+        releseDate.text = "Release Date:"
         return releseDate
     }()
     
@@ -144,16 +144,16 @@ final class MovieScrollView: UIScrollView {
         overviewLabel.text = movie.overview
         dateLabel.text = dateFormatter.formatedDateForPage(from: movie.releaseDate ?? Date())
         ratingProgressView.getRatingValue(rating: movie.voteAverage ?? 0)
-        configWatchLaterButton(inLibrary: movie.watchLater ?? false)
+        setConfigWatchLaterButton(config: movie.watchLaterButton ?? Resources.WatchLaterButton.notInLibrary.config)
         fiveStarView.setupUserMark(mark: movie.userRating)
         languageLabel.text = movie.lang?.uppercased()
         configPlayerView(trailerID: movie.trailerID)
         addElementsInContentView()
     }
     
-    func configWatchLaterButton(inLibrary: Bool) {
-        watchLaterButton.setTitle(inLibrary ? "In Library" : "Watch Later", for: .normal)
-        watchLaterButton.setImage(inLibrary ? UIImage(systemName: "bookmark") : UIImage(systemName: "pencil.and.list.clipboard"), for: .normal)
+    func setConfigWatchLaterButton(config: [String]) {
+        watchLaterButton.setTitle(config[0], for: .normal)
+        watchLaterButton.setImage(UIImage(systemName: config[1]), for: .normal)
     }
     
     @objc
@@ -260,12 +260,13 @@ private extension MovieScrollView {
         watchLaterButton.snp.makeConstraints { make in
             make.top.equalTo(playerViewContainer.snp.bottom).inset(-20)
             make.directionalHorizontalEdges.equalToSuperview().inset(10)
+            make.height.equalTo(playerViewContainer.snp.height).multipliedBy(0.2)
         }
         
         fiveStarView.snp.makeConstraints { make in
             make.top.equalTo(watchLaterButton.snp.bottom).inset(-20)
             make.directionalHorizontalEdges.equalToSuperview().inset(15)
-            make.height.equalTo(watchLaterButton.snp.height).multipliedBy(1.7)
+            make.height.equalTo(watchLaterButton.snp.height)
             make.bottom.equalToSuperview().inset(30)
         }
     }

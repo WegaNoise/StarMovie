@@ -36,7 +36,8 @@ final class UserPageViewController: UIViewController {
         label.backgroundColor = Resources.Colors.mainColorLight
         label.textAlignment = .center
         label.textColor = Resources.Colors.mainColorDark
-        label.layer.cornerRadius = 15
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
         return label
     }()
     

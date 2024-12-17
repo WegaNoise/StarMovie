@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum ScreenState {
+    case loading
+    case showContent
+    case error(NetworkErrors)
+}
+
 protocol SearchPagePresenterProtocol: AnyObject {
     var movies: [Movie]? { get }
     func viewDidLoad()
@@ -30,24 +36,46 @@ final class SearchPagePresenter {
     var movies: [Movie]?
     var archiveMovieList: [Movie]?
     private let idPrimaryCategory = Resources.Genres.genreArray.first?.id.description
+    
+    private var currentScreenState: ScreenState = .loading {
+        didSet{
+            updateScreenState()
+        }
+    }
 
     init(interactor: SearchPageInteractorProtocol, router: SearchPageRouterProtocol) {
         self.interactor = interactor
         self.router = router
     }
+    
+    private func updateScreenState() {
+        switch currentScreenState {
+        case .loading:
+            view?.hideCollectionView(isHide: true)
+            view?.showOrHideErrorView(show: false, error: .unknownError)
+        case .showContent:
+            view?.hideCollectionView(isHide: false)
+            view?.showOrHideErrorView(show: false, error: .unknownError)
+        case .error(let error):
+            view?.hideCollectionView(isHide: true)
+            view?.showOrHideErrorView(show: true, error: error)
+        }
+    }
 }
 
 extension SearchPagePresenter: SearchPagePresenterProtocol {
     func viewDidLoad() {
+        currentScreenState = .loading
         interactor.getMovieListInSelectedGenres(id: idPrimaryCategory ?? "18")
     }
     
     func changeSelectedGenres(id: Int) {
-        view?.hideCollectionView(isHide: true)
+        currentScreenState = .loading
         interactor.getMovieListInSelectedGenres(id: id.description)
     }
     
     func receivedMovieList(movieList: [Movie]) {
+        currentScreenState = .showContent
         if movies == nil {
             self.movies = movieList
             view?.initializeCollectionView()
@@ -84,12 +112,13 @@ extension SearchPagePresenter: SearchPagePresenterProtocol {
     
     func searchUserMovieData(request: String) {
         guard request.count >= 2 else { return }
-        view?.hideCollectionView(isHide: true)
+        currentScreenState = .loading
         interactor.searchMovieOnRequest(request: request)
     }
    
 //methods that handle user actions when the user exits or ends the SearchTextField search
     func searchDataReceived(searchMovieList: [Movie]?) {
+        currentScreenState = .showContent
         if archiveMovieList == nil {
             self.archiveMovieList = self.movies
         }
@@ -109,7 +138,7 @@ extension SearchPagePresenter: SearchPagePresenterProtocol {
     func receivedError(error: NetworkErrors) async {
         let error = error as NetworkErrors
         await MainActor.run {
-            view?.showOrHideErrorView(show: true, error: error)
+            currentScreenState = .error(error)
         }
     }
 }

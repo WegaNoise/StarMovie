@@ -6,19 +6,20 @@
 //
 
 import UIKit
-import SnapKit
 
-final class NavigationConroller: UINavigationController {
+final class NavigationController: UINavigationController {
     
     private let navAppearence = UINavigationBarAppearance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initialize()
+        self.delegate = self
+        interactivePopGestureRecognizer?.delegate = self
     }
 }
 
-private extension NavigationConroller {
+private extension NavigationController {
     func initialize() {
         navAppearence.titleTextAttributes = [
             .foregroundColor: Resources.Colors.mainColorLight,
@@ -31,5 +32,14 @@ private extension NavigationConroller {
     }
 }
 
+extension NavigationController: UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        interactivePopGestureRecognizer?.isEnabled = viewControllers.count > 1
+    }
+}
 
     

@@ -96,8 +96,8 @@ extension WatchLaterViewController: WatchLaterViewProtocol {
     }
     
     func updatedDataCollectionView() {
+        watchLaterCollectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.watchLaterCollectionView.reloadData()
             if self.refreshControl.isRefreshing {
                 self.watchLaterCollectionView.refreshControl?.endRefreshing()
             }
@@ -115,8 +115,11 @@ extension WatchLaterViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let presenter = presenter, indexPath.row < presenter.movieList.count else {
+            fatalError("Index out of bounds")
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WatchLaterCollectionViewCell.id, for: indexPath) as! WatchLaterCollectionViewCell
-        let movie = presenter?.movieList[indexPath.row] ?? MovieEntity()
+        let movie = presenter.movieList[indexPath.row] ?? MovieEntity()
         cell.delegate = self
         cell.configurateCell(movie: movie)
         return cell

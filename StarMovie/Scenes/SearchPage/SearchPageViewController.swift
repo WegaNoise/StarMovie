@@ -80,7 +80,6 @@ private extension SearchPageViewController {
 extension SearchPageViewController: SearchPageViewProtocol {
     func initializeCollectionView(){
         activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-        
         view.addSubview(filmCollectionView)
         filmCollectionView.dataSource = self
         filmCollectionView.searchCollectionViewDelegate = self
@@ -92,12 +91,11 @@ extension SearchPageViewController: SearchPageViewProtocol {
     }
     
     func hideCollectionView(isHide: Bool) {
-        activityIndicator.changeStateActivityIndicator(state: isHide ? .showAndAnimate : .hideAndStop)
         filmCollectionView.isHidden = isHide
+        activityIndicator.changeStateActivityIndicator(state: isHide ? .showAndAnimate : .hideAndStop)
     }
     
     func newMovieListReceived() {
-        hideCollectionView(isHide: false)
         filmCollectionView.reloadData()
     }
     
@@ -110,16 +108,11 @@ extension SearchPageViewController: SearchPageViewProtocol {
     }
     
     func showOrHideErrorView(show: Bool, error: NetworkErrors) {
-        guard show else {
+        if show {
+            errorViewAlert.configView(error: error)
+            view.addSubview(errorViewAlert)
+        } else {
             errorViewAlert.removeFromSuperview()
-            return
-        }
-        activityIndicator.changeStateActivityIndicator(state: .hideAndStop)
-        filmCollectionView.isHidden = true
-        errorViewAlert.configView(error: error)
-        view.addSubview(self.errorViewAlert)
-        errorViewAlert.snp.makeConstraints { make in
-            make.center.equalToSuperview()
         }
     }
 }

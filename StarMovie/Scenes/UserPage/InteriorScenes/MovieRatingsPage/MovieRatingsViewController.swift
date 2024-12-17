@@ -96,8 +96,8 @@ extension MovieRatingsViewController: MovieRatingsViewProtocol {
     }
     
     func updatedDataCollectionView() {
+        ratingCollectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.ratingCollectionView.reloadData()
             if self.refreshControl.isRefreshing {
                 self.ratingCollectionView.refreshControl?.endRefreshing()
             }

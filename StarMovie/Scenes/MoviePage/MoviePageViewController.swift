@@ -10,7 +10,7 @@ import SnapKit
 
 protocol MoviePageViewProtocol: AnyObject {
     func startShowData()
-    func changeAddInLibraryButton(inLibrary: Bool)
+    func changeAddInLibraryButton(setConfig: [String])
     func showErrorView(error: NetworkErrors)
 }
 
@@ -41,7 +41,8 @@ private extension MoviePageViewController {
     
     func configNavBar(){
         navigationItem.title = Resources.Titls.moviePage
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapBackButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(didTapBackButton))
+        navigationItem.leftBarButtonItem?.tintColor = Resources.Colors.mainColorLight
     }
     
     @objc 
@@ -63,8 +64,8 @@ extension MoviePageViewController: MoviePageViewProtocol {
         movieScrollView.addContentInScrollView(movie: movie)
     }
     
-    func changeAddInLibraryButton(inLibrary: Bool) {
-        movieScrollView.configWatchLaterButton(inLibrary: inLibrary)
+    func changeAddInLibraryButton(setConfig: [String]) {
+        movieScrollView.setConfigWatchLaterButton(config: setConfig)
     }
     
     func showErrorView(error: NetworkErrors) {

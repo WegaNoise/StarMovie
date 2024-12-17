@@ -12,7 +12,7 @@ extension UITabBarController {
         let viewController = viewController
         viewController.tabBarItem.title = title
         viewController.tabBarItem.image = image
-        let navController = NavigationConroller(rootViewController: viewController)
+        let navController = NavigationController(rootViewController: viewController)
 
         return navController
     }
