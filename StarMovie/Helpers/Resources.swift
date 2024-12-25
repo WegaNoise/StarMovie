@@ -80,10 +80,9 @@ enum Resources{
     }
     
     enum UrlMovieDB {
+        static let keyApi = " "//enter your API Details
+        static let accessKeyAPI = " "//enter your API Read Access Token
         static let baseURL = "https://api.themoviedb.org/3/"
-// Enter your apiKey data received https://developer.themoviedb.org/docs/getting-started
-        static let keyApi = SensitiveData.movieDBApiKey
-        static let accessKeyAPI = SensitiveData.movieDBApiUrl
         static let imageUrlPath = "https://image.tmdb.org/t/p/w500/"
         static let searchUrlPath = "https://api.themoviedb.org/3/search/movie"
         static let searchMovieListPath = "https://api.themoviedb.org/3/discover/movie"
@@ -91,9 +90,8 @@ enum Resources{
     }
     
     enum UrlYouTube {
+        static let keyAPI = " "//enter your API Key
         static let baseSearhcURL = "https://youtube.googleapis.com/youtube/v3/search"
-// Enter your apiKey data received https://developers.google.com/youtube/v3
-        static let keyAPI = SensitiveData.youtubeApiKey
     }
     
     enum User {

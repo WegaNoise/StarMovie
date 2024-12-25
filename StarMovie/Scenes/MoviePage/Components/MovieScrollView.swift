@@ -164,7 +164,7 @@ final class MovieScrollView: UIScrollView {
 
 private extension MovieScrollView {
     func setupScrollView() {
-        showsVerticalScrollIndicator = true
+        showsVerticalScrollIndicator = false
         alwaysBounceVertical = true
         fiveStarView.fiveStarsDelegare = self
         addSubviews(contentView)
