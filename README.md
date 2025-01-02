@@ -5,7 +5,7 @@
   <img src="ReadMeAssets/iconGreenDark.jpg" alt="IconApp" width="300" height="300"/>
 </div>
 <div align="center">
-  <img alt="Cocoapods platforms" src="https://img.shields.io/cocoapods/p/ios?style=plastic&color=red">  <img alt="GitHub License" src="https://img.shields.io/github/license/WegaNoise/StarMovie">  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/WegaNoise/StarMovie">
+  <img alt="Cocoapods platforms" src="https://img.shields.io/cocoapods/p/ios?style=plastic&color=red">  <img alt="GitHub License" src="https://img.shields.io/github/license/WegaNoise/StarMovie">  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/WegaNoise/StarMovie?logoColor=%233C91DC&color=%233C91DC">
 </div>
 
 ## Table of Contents
