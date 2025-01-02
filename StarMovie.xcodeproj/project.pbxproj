@@ -89,6 +89,16 @@
 		D2FC681B2D11E49D0063B66A /* SensitiveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FC681A2D11E49D0063B66A /* SensitiveData.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D249543A2D1EDE0300042BAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D23E72022BC8509000EC4B7E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D23E72092BC8509000EC4B7E;
+			remoteInfo = StarMovie;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0BFF202791F6C63C49B7D4FC /* Pods-StarMovie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StarMovie.release.xcconfig"; path = "Target Support Files/Pods-StarMovie/Pods-StarMovie.release.xcconfig"; sourceTree = "<group>"; };
 		3CE26929A036185DA83C28C0 /* Pods_StarMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StarMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +154,7 @@
 		D248B8122CF3E1D800A97954 /* UserPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageViewController.swift; sourceTree = "<group>"; };
 		D248B82C2CF3E35400A97954 /* MovieEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieEntity.swift; sourceTree = "<group>"; };
 		D248B82E2CF3E35400A97954 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		D24954362D1EDE0300042BAB /* StarMovieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StarMovieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D253F8562CF4F6910069AFB4 /* URLConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConfigurator.swift; sourceTree = "<group>"; };
 		D253F8582D00B62A0069AFB4 /* Array + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array + .swift"; sourceTree = "<group>"; };
 		D26120612BC9D25900B0761C /* UIColor + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + .swift"; sourceTree = "<group>"; };
@@ -177,6 +188,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D24954372D1EDE0300042BAB /* StarMovieTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = StarMovieTests; sourceTree = "<group>"; };
 		D29F27492D0CACD400D4DBFE /* ScrollViewComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ScrollViewComponents; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -186,6 +198,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				13CC33FF8D13B2CC3909209B /* Pods_StarMovie.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D24954332D1EDE0300042BAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,7 +284,9 @@
 				D23E720C2BC8509000EC4B7E /* StarMovie */,
 				D232BFD62CF3DDE60084C640 /* StarMovie.app */,
 				A7568CCFECEFA14D1C714299 /* Pods */,
+				D24954372D1EDE0300042BAB /* StarMovieTests */,
 				26C7D766FD6F72D8803920E8 /* Frameworks */,
+				D24954362D1EDE0300042BAB /* StarMovieTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -588,6 +609,29 @@
 			productReference = D232BFD62CF3DDE60084C640 /* StarMovie.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D24954352D1EDE0300042BAB /* StarMovieTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D249543E2D1EDE0300042BAB /* Build configuration list for PBXNativeTarget "StarMovieTests" */;
+			buildPhases = (
+				D24954322D1EDE0300042BAB /* Sources */,
+				D24954332D1EDE0300042BAB /* Frameworks */,
+				D24954342D1EDE0300042BAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D249543B2D1EDE0300042BAB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D24954372D1EDE0300042BAB /* StarMovieTests */,
+			);
+			name = StarMovieTests;
+			packageProductDependencies = (
+			);
+			productName = StarMovieTests;
+			productReference = D24954362D1EDE0300042BAB /* StarMovieTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -595,11 +639,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					D23E72092BC8509000EC4B7E = {
 						CreatedOnToolsVersion = 15.3;
+					};
+					D24954352D1EDE0300042BAB = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = D23E72092BC8509000EC4B7E;
 					};
 				};
 			};
@@ -617,6 +665,7 @@
 			projectRoot = "";
 			targets = (
 				D23E72092BC8509000EC4B7E /* StarMovie */,
+				D24954352D1EDE0300042BAB /* StarMovieTests */,
 			);
 		};
 /* End PBXProject section */
@@ -629,6 +678,13 @@
 				D23E72172BC8509100EC4B7E /* Assets.xcassets in Resources */,
 				D23E721A2BC8509100EC4B7E /* Base in Resources */,
 				D299CA2F2D11ED460096D9E7 /* StarActivityIndicator.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D24954342D1EDE0300042BAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,7 +816,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D24954322D1EDE0300042BAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D249543B2D1EDE0300042BAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D23E72092BC8509000EC4B7E /* StarMovie */;
+			targetProxy = D249543A2D1EDE0300042BAB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D23E72182BC8509100EC4B7E /* LaunchScreen.storyboard */ = {
@@ -963,6 +1034,44 @@
 			};
 			name = Release;
 		};
+		D249543C2D1EDE0300042BAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6LNBGM345;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Petar.StarMovieTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StarMovie.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StarMovie";
+			};
+			name = Debug;
+		};
+		D249543D2D1EDE0300042BAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = G6LNBGM345;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Petar.StarMovieTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StarMovie.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StarMovie";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -980,6 +1089,15 @@
 			buildConfigurations = (
 				D23E721F2BC8509100EC4B7E /* Debug */,
 				D23E72202BC8509100EC4B7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D249543E2D1EDE0300042BAB /* Build configuration list for PBXNativeTarget "StarMovieTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D249543C2D1EDE0300042BAB /* Debug */,
+				D249543D2D1EDE0300042BAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -10,7 +10,7 @@ import CoreData
 
 final class CoreDataManager {
     static let shared = CoreDataManager()
-    let persistentContainer: NSPersistentContainer
+    var persistentContainer: NSPersistentContainer
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
@@ -116,8 +116,8 @@ final class CoreDataManager {
         }
     }
     
-    func changePropertyIsWatched(movie: MovieEntity) {
-        if let existingMovie = fetchMovieByID(Int(movie.id)) {
+    func changePropertyIsWatched(movieID: Int) {
+        if let existingMovie = fetchMovieByID(movieID) {
             if existingMovie.watchLater == true {
                 existingMovie.isWatched = !existingMovie.isWatched
             }
@@ -139,7 +139,7 @@ final class CoreDataManager {
     }
 }
 
-private extension CoreDataManager {
+extension CoreDataManager {
     static func createManagerObjectModel() -> NSManagedObjectModel {
         let model = NSManagedObjectModel()
         

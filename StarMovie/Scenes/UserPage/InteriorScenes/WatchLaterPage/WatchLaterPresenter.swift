@@ -51,8 +51,8 @@ extension WatchLaterPresenter: WatchLaterPresenterProtocol {
     }
     
     func pressedIsWatchedCheckbox(_  indexCell: Int) {
-        let movie = movieList[indexCell]
-        interactor.changeIsWatchedState(movie: movie)
+        let movieID = movieList[indexCell].id
+        interactor.changeIsWatchedState(movieID: Int(movieID))
     }
     
     func movieListUpdate() {

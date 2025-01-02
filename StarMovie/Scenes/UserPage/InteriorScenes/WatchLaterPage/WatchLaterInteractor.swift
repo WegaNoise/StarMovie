@@ -7,7 +7,7 @@
 
 protocol WatchLaterInteractorProtocol: AnyObject {
     func fetchWatchLaterMovies()
-    func changeIsWatchedState(movie: MovieEntity)
+    func changeIsWatchedState(movieID: Int)
     func findMovieByID(_ id: Int)
 }
 
@@ -22,8 +22,8 @@ final class WatchLaterInteractor: WatchLaterInteractorProtocol {
         presenter?.uploadedWatchLaterMovies(movieList)
     }
     
-    func changeIsWatchedState(movie: MovieEntity) {
-        coreDataManager.changePropertyIsWatched(movie: movie)
+    func changeIsWatchedState(movieID: Int) {
+        coreDataManager.changePropertyIsWatched(movieID: movieID)
     }
     
     func findMovieByID(_ id: Int) {

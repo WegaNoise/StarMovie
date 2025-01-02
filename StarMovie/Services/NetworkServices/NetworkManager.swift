@@ -12,14 +12,19 @@ protocol NetworkServicesProtocol {
 }
 
 final class NetworkManager: NetworkServicesProtocol {
-    static let shared = NetworkManager()
+    static let shared = NetworkManager(session: URLSession(configuration: .default))
     private let errorManager = NertworkErrorManager()
+    private let session: URLSession
+    
+    init(session: URLSession) {
+        self.session = session
+    }
     
     func getMovieListForHomePage() async throws -> [Movie]? {
         var movies:[Movie] = []
         for page in 1...6 {
             guard let url = urlConfigurator(.homePage, with: page.description) else { throw NetworkErrors.invalidURL }
-            let (data, _ ) = try await URLSession.shared.data(from: url)
+            let (data, _ ) = try await session.data(from: url)
             do {
                 let result = try JSONDecoder().decode(Movies.self, from: data)
                 for movie in result.results {
@@ -34,13 +39,13 @@ final class NetworkManager: NetworkServicesProtocol {
     
     func getImageForMovie(imageLink: String) async throws -> Data {
         guard let url = urlConfigurator(.imageMovie, with: imageLink) else { throw NetworkErrors.invalidURL }
-        let (data, _ ) = try await URLSession.shared.data(from: url)
+        let (data, _ ) = try await session.data(from: url)
         return data
     }
     
     func searchMovieByID(id: Int) async throws -> Movie? {
         guard let url = urlConfigurator(.movieById, with: id.description) else { throw NetworkErrors.invalidURL }
-        let (data, _ ) = try await URLSession.shared.data(from: url)
+        let (data, _ ) = try await session.data(from: url)
         do {
             let result = try JSONDecoder().decode(Movie.self, from: data)
             return result
@@ -52,7 +57,7 @@ final class NetworkManager: NetworkServicesProtocol {
     func getYouTubeTrailer(filmName: String, filmYear: String) async throws -> String? {
         let query = "\(filmName) \(filmYear)"
         guard let url = urlConfigurator(.ytTrailer, with: query) else { throw NetworkErrors.invalidURL }
-        let (data, _ ) = try await URLSession.shared.data(from: url)
+        let (data, _ ) = try await session.data(from: url)
         do {
             let result = try JSONDecoder().decode(YouTube.self, from: data)
             guard let videoId = result.items.first?.id.videoID else {
@@ -66,7 +71,7 @@ final class NetworkManager: NetworkServicesProtocol {
     
     func searhMovieList(query: String) async throws -> [Movie]? {
         guard let url = urlConfigurator(.searchMovie, with: query) else { throw NetworkErrors.invalidURL }
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, _) = try await session.data(from: url)
         do {
             let result = try JSONDecoder().decode(Movies.self, from: data)
             return result.results
@@ -77,7 +82,7 @@ final class NetworkManager: NetworkServicesProtocol {
     
     func getMovieListInGenre(genereID: String) async throws -> [Movie] {
         guard let url = urlConfigurator(.genreMovie, with: genereID) else { throw NetworkErrors.invalidURL }
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, _) = try await session.data(from: url)
         do {
             let result = try JSONDecoder().decode(Movies.self, from: data)
             return result.results
